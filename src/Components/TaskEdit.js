@@ -13,6 +13,16 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
+import {
+    Modal,
+    ModalHeader,
+    ModalBody,
+    ModalFooter,
+    Form,
+    FormGroup,
+    Label,
+    Input,
+} from 'reactstrap';
 var shortid = require('shortid');
 
 const styles = {
@@ -67,6 +77,39 @@ class TaskEdit extends Component {
                     </AppBar>
 
                     <div>
+                        <Form>
+                            <FormGroup>
+                                <Label for="taskName">ชื่องาน</Label>
+                                <Input type="text" name="taskName" onChange={this.handleChange} value={this.props.items.task} />
+                            </FormGroup>
+                            <FormGroup>
+                                <Label for="startDate">startDate</Label>
+                                <Input type="date" name="startDate" onChange={this.handleChange} value={this.state.startDate} />
+                            </FormGroup>
+                            {' '}
+                            <FormGroup>
+                                <Label for="endDate">endDate</Label>
+                                <Input type="date" name="endDate" onChange={this.handleChange} value={this.state.endDate} />
+                            </FormGroup>
+                            <FormGroup>
+                                <Label for="description">คำอธิบาย</Label>
+                                <Input type="text" name="description" onChange={this.handleChange} value={this.state.description} />
+                            </FormGroup>
+                            <FormGroup>
+                                <div>
+                                    <progress value={this.state.uploadValue} max="100">
+                                        {this.state.uploadValue} %
+                            </progress>
+                                    <br />
+                                    <input type="file" onChange={this.handleUpload} />
+                                    <br />
+
+                                </div>
+                            </FormGroup>
+                        </Form>
+        
+                        <Button outline color="secondary" onClick={() => this.modalCancle(this.props.id)}>ยกเลิก</Button>{' '}
+                        <Button color="primary" onClick={() => this.handleSave(this.props.id)}>บันทึก</Button>
 
                     </div>
 

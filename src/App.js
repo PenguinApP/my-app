@@ -10,6 +10,7 @@ import Category from './Components/Category';
 import Calendar from './Components/Calendar';
 import History from './Components/History';
 import TaskEdit from './Components/TaskEdit';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 class App extends Component {
 
