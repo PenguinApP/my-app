@@ -68,10 +68,6 @@ class TaskEdit extends Component {
 
                     <div>
 
-
-
-
-
                     </div>
 
                 </Dialog>
