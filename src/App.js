@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 
+import firebase, { db } from './Config/Firebase';
 import Input from './Components/Input';
 import Navigation from './Components/Navigation'
 
@@ -31,12 +32,28 @@ class App extends Component {
   }
 
   // input
-  addItem(item) {
+  addItem(Task) {
+
+
     this.setState({
-      items: item
+      items: Task
     })
-    console.log(item, 'itemsApp')
+    console.log(Task, 'itemsApp')
+
+    var itemRef = db.collection('planTasks');
+    var items = {
+      Task
+    }
+
+    itemRef.add(items);
   }
+
+  showItem(){
+
+  };
+
+
+
   // categoryOpen
   handleDrawerOpen = (open) => {
     this.setState({
@@ -59,7 +76,7 @@ class App extends Component {
     console.log('Page', page)
   }
 
-  
+
 
   renderpage() {
     switch (this.state.page) {
@@ -95,7 +112,7 @@ class App extends Component {
           <div className="App">
 
             <Calendar
-            items={this.state.items}
+              items={this.state.items}
             />
 
           </div>

@@ -107,8 +107,6 @@ class TaskEdit extends Component {
                                 </div>
                             </FormGroup>
                         </Form>
-        
-                        <Button outline color="secondary" onClick={() => this.modalCancle(this.props.id)}>ยกเลิก</Button>{' '}
                         <Button color="primary" onClick={() => this.handleSave(this.props.id)}>บันทึก</Button>
 
                     </div>

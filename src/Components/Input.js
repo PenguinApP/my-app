@@ -42,7 +42,11 @@ class InputItem extends Component {
         super(props)
         this.state = {
 
-            task: '',
+            name: '',
+            startAt: '',
+            endAt: '',
+            content:'',
+            isDone: false,
 
         }
         this.handleOnchange = this.handleOnchange.bind(this)
@@ -55,12 +59,16 @@ class InputItem extends Component {
         })
     }
     handleSubmit() {
-        var task = {
-            id: shortid.generate(),
-            task: this.state.task
+        var Task = {
+            name: this.state.task,
+            startAt: '',
+            endAt: '',
+            content:'',
+            isDone: false,
         }
+        
         var itemTask = this.props.items
-        const newArray = update(itemTask, { $push: [task] });
+        const newArray = update(itemTask, { $push: [Task] });
         this.setState({
             task: ''
         })

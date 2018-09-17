@@ -71,7 +71,7 @@ class TaskShow extends Component {
                                 >
                                     <ListItemText
                                         key={value.id}
-                                        primary={value.task} />
+                                        primary={value.name} />
                                     <ListItemSecondaryAction>
                                         <Checkbox
                                             onChange={this.handleToggle(value.id)}
