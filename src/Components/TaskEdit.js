@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+
 import firebase, { db } from '../Config/Firebase';
 
 import PropTypes from 'prop-types';
@@ -44,41 +45,39 @@ class TaskEdit extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            name: this.props.items.name,
-            startAt: this.props.items.startAt,
-            endAt: this.props.items.endAt,
-            content: this.props.items.content,
-
+            name: '',
+            endAt: '',
+            startAt: '',
+            content: '',
         }
-        this.handleClose = this.handleClose.bind(this);
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSave = this.handleSave.bind(this);
     }
 
-    handleChange(e) {
+    handleChange = (e) => {
         this.setState({
             [e.target.name]: e.target.value
-        });
+        })
     }
 
-    handleSave(id) {
-        var itemRef = db.collection('item').doc(id);
+    handleSave() {
+        const { name, endAt, startAt, content } = this.state
+        // var itemRef = db.collection('item').doc(id);
 
-        var sd = new Date(this.props.startDate);
+        // var sd = new Date(this.props.startDate);
 
-        console.log(sd);
+        // console.log(sd);
 
-        var ed = new Date(this.props.endDate);
-        console.log(ed);
+        // var ed = new Date(this.props.endDate);
+        // console.log(ed);
 
         var item = {
-            name: this.props.name,
-            content: this.props.content,
-            startDate: sd,
-            endDate: ed,
+            name: document.getElementById("name").value,
+            content: document.getElementById("content").value,
+            startAt: document.getElementById("startAt").value,
+            endAt: document.getElementById("endAt").value,
         }
+        console.log(item)
         // this.props.onArrayUpdate(id, item)
-        itemRef.update(item);
+        //itemRef.update(item);
         //    var TT =  itemRef.doc(this.props.id).get()
         //         .then(function (hi) {
 
@@ -106,35 +105,30 @@ class TaskEdit extends Component {
         //     console.log("Error จ้า: ", error);
         // });
 
-        this.setState({
-        });
-    }
-
-    handleClose(close, value) {
-        this.props.handleEditOpen(close, value)
-        console.log(close, 'Edit')
+        // this.setState({
+        // });
     }
 
     render() {
-        const { classes } = this.props;
+        const { item, classes, openEdit, handleToggleEditTask } = this.props;
 
         return (
             <div>
                 <Dialog
                     fullScreen
-                    open={this.props.openEdit}
+                    open={openEdit}
                     onClose={this.handleClose}
                     TransitionComponent={Transition}
                 >
                     <AppBar className={classes.appBar}>
                         <Toolbar>
-                            <IconButton color="inherit" onClick={() => this.handleClose(false, this.props.items)} aria-label="Close">
+                            <IconButton color="inherit" onClick={() => handleToggleEditTask()} aria-label="Close">
                                 <CloseIcon />
                             </IconButton>
                             <Typography variant="title" color="inherit" className={classes.flex}>
-                                {this.props.items.task}
+                                {item.name}
                             </Typography>
-                            <Button color="inherit" onClick={() => this.handleSave(this.props.items.id)}>
+                            <Button color="inherit" onClick={() => this.handleSave()}>
                                 save
                             </Button>
                         </Toolbar>
@@ -144,20 +138,20 @@ class TaskEdit extends Component {
                         <Form>
                             <FormGroup>
                                 <Label for="taskName">ชื่องาน</Label>
-                                <Input type="text" name="taskName" onChange={this.handleChange} value={this.state.name} />
+                                <Input id='name' type="text" name="taskName" defaultValue={item.name} />
                             </FormGroup>
                             <FormGroup>
                                 <Label for="startDate">startDate</Label>
-                                <Input type="date" name="startDate" onChange={this.handleChange} value={this.state.startAt} />
+                                <Input id='startAt' type="date" name="startDate" defaultValue={item.startAt} />
                             </FormGroup>
                             {' '}
                             <FormGroup>
                                 <Label for="endDate">endDate</Label>
-                                <Input type="date" name="endDate" onChange={this.handleChange} value={this.state.endAt} />
+                                <Input id='endAt' type="date" name="endDate" defaultValue={item.endAt} />
                             </FormGroup>
                             <FormGroup>
                                 <Label for="description">คำอธิบาย</Label>
-                                <Input type="text" name="description" onChange={this.handleChange} value={this.state.content} />
+                                <Input id='content' type="text" name="description" defaultValue={item.content} />
                             </FormGroup>
                         </Form>
 

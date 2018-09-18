@@ -41,13 +41,13 @@ class InputItem extends Component {
     constructor(props) {
         super(props)
         this.state = {
-
+            name: '',
             task: '',
             startAt: new Date(),
             endAt: new Date(),
             content: '',
             isDone: false,
-
+            id: null,
         }
         this.handleOnchange = this.handleOnchange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
@@ -59,19 +59,21 @@ class InputItem extends Component {
         })
     }
     handleSubmit() {
-        var Task = {
-            name: this.state.task,
-            startAt: this.state.startAt,
-            endAt: this.state.endAt,
-            content: this.state.content,
-            isDone: this.state.isDone,
+        if (!this.state.name.trim()) {
+            alert('กรอก')
+            this.setState({ name: '', })
+        } else {
+            var Task = {
+                name: this.state.name,
+                startAt: this.state.startAt,
+                endAt: this.state.endAt,
+                content: this.state.content,
+                isDone: this.state.isDone,
+            }
+            this.props.addItem(Task)
+            this.setState({ name: '', })
         }
-        this.props.addItem(Task)
 
-
-        this.setState({
-            task: '',
-        })
         // itemTask.push(task)
     }
 
@@ -96,9 +98,9 @@ class InputItem extends Component {
                             underline: classes.cssUnderline,
                         }}
                         id="custom-css-input"
-                        name="task"
+                        name="name"
                         onChange={this.handleOnchange}
-                        value={this.state.task}
+                        value={this.state.name}
                     />
                 </FormControl>
                 <Button onClick={this.handleSubmit} variant="fab" color="primary" className={classes.button}>

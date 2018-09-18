@@ -23,20 +23,18 @@ class TaskShow extends Component {
         super(props)
         this.state = {
             task: '',
-            items: [],
             checked: [1],
+            item: [],
+            openEdit: false,
         }
-        this.handleEditOpen = this.handleEditOpen.bind(this);
     }
 
-    handleEditOpen(open, value) {
-        this.setState({
-            items: value
-        })
-        console.log(open, 'Edit')
-        this.props.handleEditOpen(open, value)
+    handleEditOpen = (value) => {
+        this.setState({ item: value, openEdit: true })
     }
-
+    handleToggleEditTask = () => {
+        this.setState({ openEdit: !this.state.openEdit })
+    }
     handleToggle = value => () => {
         const { checked } = this.state;
         const currentIndex = checked.indexOf(value);
@@ -56,42 +54,37 @@ class TaskShow extends Component {
 
 
     render() {
-        const { classes } = this.props;
+        const { items, classes } = this.props;
         return (
             <div className={classes.root}>
 
                 <List component="nav">
-                    {this.props.items.map((value) => {
+                    {items.map((value) => {
                         return (
-                            <div key={value.id}>
-                                <ListItem
-                                    key={value.id}
-                                    button
-                                    onClick={() => this.handleEditOpen(true, value)}
-                                >
-                                    <ListItemText
+                            <ListItem
+                                key={value.id}
+                                button
+                                onClick={() => this.handleEditOpen(value)}
+                            >
+                                <ListItemText
 
-                                        primary={value.name} />
-                                    <ListItemSecondaryAction>
-                                        <Checkbox
-                                            onChange={this.handleToggle(value.id)}
-                                            checked={this.state.checked.indexOf(value.id) !== -1}
-                                        />
-                                    </ListItemSecondaryAction>
-                                </ListItem>
-                                <Divider />
-                            </div>
+                                    primary={value.name} />
+                                <ListItemSecondaryAction>
+                                    <Checkbox
+                                        onChange={this.handleToggle(value.id)}
+                                        checked={this.state.checked.indexOf(value.id) !== -1}
+                                    />
+                                </ListItemSecondaryAction>
+                            </ListItem>
                         )
                     }
-
                     )
                     }
                 </List>
 
                 <TaskEdit
-                    openEdit={this.props.openEdit}
-                    items={this.props.items}
-                    handleEditOpen={this.props.handleEditOpen}
+                    handleToggleEditTask={this.handleToggleEditTask}
+                    {...this.state}
                 />
             </div>
         );

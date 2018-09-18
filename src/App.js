@@ -13,6 +13,7 @@ import History from './Components/History';
 import TaskEdit from './Components/TaskEdit';
 import moment from 'moment';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import update from 'immutability-helper';
 
 const itemRef = db.collection('planTasks')
 
@@ -23,32 +24,35 @@ class App extends Component {
     this.state = {
       items: [],
       Category: [],
-      open: false,
-      openEdit: false,
       page: 'งาน',
     }
-    this.addItem = this.addItem.bind(this);
-    this.changePage = this.changePage.bind(this);
-    this.renderpage = this.renderpage.bind(this);
-    this.handleEditOpen = this.handleEditOpen.bind(this);
-    this.handleDrawerOpen = this.handleDrawerOpen.bind(this);
   }
-
-  // input
-  addItem(Task) {
-
-    var { items } = this.state
-    items.push(Task)
-
-    console.log(Task, 'itemsApp')
-
-
-    itemRef.add(Task);
-    this.onSortItems(items)
-  }
-
   componentDidMount() {
+    this.queryTask()
+  }
+  // input
+  addItem = (Task) => {
     var { items } = this.state
+    const updateTask = update(items, { $push: [Task] })
+    itemRef
+      .add(Task)
+      .then(function (docRef) {
+       
+        const TaskLength = updateTask.length
+        const id = docRef.id 
+        console.log(id)
+        updateTask[TaskLength].id = id
+        console.log("Document successfully written!");
+      })
+      .catch(function (error) {
+        console.error("Error writing document: ", error);
+      });
+
+  }
+
+
+  queryTask = () => {
+    var items = []
     var self = this
     itemRef.get()
       .then(function (querySnapshot) {
@@ -77,7 +81,7 @@ class App extends Component {
       });
   }
 
-  onSortItems(items) {
+  onSortItems = (items) => {
     var itemsSort = items.sort(function (x, y) {
       var a = new Date(x.startAt);
       var b = new Date(y.startAt);
@@ -100,14 +104,9 @@ class App extends Component {
     console.log(open, 'Drawer')
   };
   // editOpen
-  handleEditOpen(open, value) {
-    this.setState({
-      openEdit: open,
-    })
-    console.log(value, 'itemsTaskshow')
-  }
 
-  changePage(page) {
+
+  changePage = (page) => {
     this.setState({
       page: page
     })
@@ -116,7 +115,7 @@ class App extends Component {
 
 
 
-  renderpage() {
+  renderpage = () => {
     switch (this.state.page) {
       case 'งาน':
         return (
@@ -124,11 +123,11 @@ class App extends Component {
 
             <Input
               items={this.state.items}
-              addItem={this.addItem} />
+              addItem={this.addItem}
+            />
 
             <TaskShow
-              items={this.state.items}
-              openEdit={this.state.openEdit}
+              {...this.state}
               handleEditOpen={this.handleEditOpen}
             />
 
