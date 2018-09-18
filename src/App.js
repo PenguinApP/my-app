@@ -11,7 +11,10 @@ import Category from './Components/Category';
 import Calendar from './Components/Calendar';
 import History from './Components/History';
 import TaskEdit from './Components/TaskEdit';
+import moment from 'moment';
 import 'bootstrap/dist/css/bootstrap.min.css';
+
+const itemRef = db.collection('planTasks')
 
 class App extends Component {
 
@@ -34,25 +37,60 @@ class App extends Component {
   // input
   addItem(Task) {
 
+    var { items } = this.state
+    items.push(Task)
 
-    this.setState({
-      items: Task
-    })
     console.log(Task, 'itemsApp')
 
-    var itemRef = db.collection('planTasks');
-    var items = {
-      Task
-    }
 
-    itemRef.add(items);
+    itemRef.add(Task);
+    this.onSortItems(items)
   }
 
-  showItem(){
+  componentDidMount() {
+    var { items } = this.state
+    var self = this
+    itemRef.get()
+      .then(function (querySnapshot) {
+        querySnapshot.forEach(function (doc) {
+          var isd = new Date(doc.data().startAt.toDate());
+          var ied = new Date(doc.data().endAt.toDate());
+          var Bes = isd.toDateString();
+          var Bee = ied.toDateString();
+          var sdstring = moment(Bes).format('YYYY-MM-DD');
+          var edstring = moment(Bee).format('YYYY-MM-DD');
+          items.push({
+            isDone: doc.data().isDone,
+            content: doc.data().content,
+            startAt: sdstring,
+            endAt: edstring,
+            name: doc.data().name,
+            id: doc.id,
+          })
+          //console.log(doc.id, " => ", doc.data());
+        });
+        self.onSortItems(items)
+      })
+      .catch(function (error) {
+        3
+        console.log("Error getting documents: ", error);
+      });
+  }
 
-  };
+  onSortItems(items) {
+    var itemsSort = items.sort(function (x, y) {
+      var a = new Date(x.startAt);
+      var b = new Date(y.startAt);
+      console.log(a);
+      console.log(b);
 
-
+      return a - b;
+    });
+    console.log(itemsSort)
+    this.setState({
+      items: itemsSort
+    })
+  }
 
   // categoryOpen
   handleDrawerOpen = (open) => {

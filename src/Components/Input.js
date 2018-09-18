@@ -42,10 +42,10 @@ class InputItem extends Component {
         super(props)
         this.state = {
 
-            name: '',
-            startAt: '',
-            endAt: '',
-            content:'',
+            task: '',
+            startAt: new Date(),
+            endAt: new Date(),
+            content: '',
             isDone: false,
 
         }
@@ -61,19 +61,18 @@ class InputItem extends Component {
     handleSubmit() {
         var Task = {
             name: this.state.task,
-            startAt: '',
-            endAt: '',
-            content:'',
-            isDone: false,
+            startAt: this.state.startAt,
+            endAt: this.state.endAt,
+            content: this.state.content,
+            isDone: this.state.isDone,
         }
-        
-        var itemTask = this.props.items
-        const newArray = update(itemTask, { $push: [Task] });
+        this.props.addItem(Task)
+
+
         this.setState({
-            task: ''
+            task: '',
         })
         // itemTask.push(task)
-        this.props.addItem(newArray)
     }
 
 

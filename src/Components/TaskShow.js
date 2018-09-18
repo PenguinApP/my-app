@@ -61,7 +61,7 @@ class TaskShow extends Component {
             <div className={classes.root}>
 
                 <List component="nav">
-                    {this.props.items.map(value => {
+                    {this.props.items.map((value) => {
                         return (
                             <div key={value.id}>
                                 <ListItem
@@ -70,7 +70,7 @@ class TaskShow extends Component {
                                     onClick={() => this.handleEditOpen(true, value)}
                                 >
                                     <ListItemText
-                                        key={value.id}
+
                                         primary={value.name} />
                                     <ListItemSecondaryAction>
                                         <Checkbox
@@ -90,7 +90,7 @@ class TaskShow extends Component {
 
                 <TaskEdit
                     openEdit={this.props.openEdit}
-                    items={this.state.items}
+                    items={this.props.items}
                     handleEditOpen={this.props.handleEditOpen}
                 />
             </div>
