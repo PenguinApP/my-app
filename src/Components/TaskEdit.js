@@ -45,10 +45,6 @@ class TaskEdit extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            name: '',
-            endAt: '',
-            startAt: '',
-            content: '',
         }
     }
 
@@ -59,7 +55,6 @@ class TaskEdit extends Component {
     }
 
     handleSave() {
-        const { name, endAt, startAt, content } = this.state
         // var itemRef = db.collection('item').doc(id);
 
         // var sd = new Date(this.props.startDate);
@@ -74,8 +69,10 @@ class TaskEdit extends Component {
             content: document.getElementById("content").value,
             startAt: document.getElementById("startAt").value,
             endAt: document.getElementById("endAt").value,
+            id: this.props.item.id
         }
-        console.log(item)
+        this.props.editItem(item,this.props.selectedTaskIndex)
+        this.props.handleToggleEditTask()
         // this.props.onArrayUpdate(id, item)
         //itemRef.update(item);
         //    var TT =  itemRef.doc(this.props.id).get()

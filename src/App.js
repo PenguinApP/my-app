@@ -33,21 +33,32 @@ class App extends Component {
   // input
   addItem = (Task) => {
     var { items } = this.state
+    var self = this
     const updateTask = update(items, { $push: [Task] })
     itemRef
       .add(Task)
       .then(function (docRef) {
-       
         const TaskLength = updateTask.length
-        const id = docRef.id 
-        console.log(id)
-        updateTask[TaskLength].id = id
-        console.log("Document successfully written!");
+        const id = docRef.id
+        updateTask[TaskLength - 1].id = id
+        self.onSortItems(updateTask)
       })
       .catch(function (error) {
         console.error("Error writing document: ", error);
       });
-
+  }
+  editItem = (item, index) => {
+    const { items } = this.state
+    const id = item.id
+    const editIndex = items.findIndex(item => item.id === id)
+    const editItem = update(items, { [editIndex]: { $set: item } })
+    this.setState({ items: editItem })
+      itemRef.doc(id).set({
+       name: item.name,
+       content: item.content,
+       startAt: new Date(item.startAt),
+       endAt: new Date(item.endAt)
+    }, { merge: true });
   }
 
 
@@ -129,6 +140,7 @@ class App extends Component {
             <TaskShow
               {...this.state}
               handleEditOpen={this.handleEditOpen}
+              editItem={this.editItem}
             />
 
 

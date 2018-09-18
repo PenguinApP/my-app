@@ -26,11 +26,12 @@ class TaskShow extends Component {
             checked: [1],
             item: [],
             openEdit: false,
+            selectedTaskIndex: '',
         }
     }
 
-    handleEditOpen = (value) => {
-        this.setState({ item: value, openEdit: true })
+    handleEditOpen = (value, index) => {
+        this.setState({ item: value, openEdit: true, selectedTaskIndex: index })
     }
     handleToggleEditTask = () => {
         this.setState({ openEdit: !this.state.openEdit })
@@ -54,17 +55,17 @@ class TaskShow extends Component {
 
 
     render() {
-        const { items, classes } = this.props;
+        const { items, classes,editItem } = this.props;
         return (
             <div className={classes.root}>
 
                 <List component="nav">
-                    {items.map((value) => {
+                    {items.map((value, index) => {
                         return (
                             <ListItem
                                 key={value.id}
                                 button
-                                onClick={() => this.handleEditOpen(value)}
+                                onClick={() => this.handleEditOpen(value, index)}
                             >
                                 <ListItemText
 
@@ -84,6 +85,7 @@ class TaskShow extends Component {
 
                 <TaskEdit
                     handleToggleEditTask={this.handleToggleEditTask}
+                    editItem={editItem}
                     {...this.state}
                 />
             </div>

@@ -65,10 +65,11 @@ class InputItem extends Component {
         } else {
             var Task = {
                 name: this.state.name,
-                startAt: this.state.startAt,
-                endAt: this.state.endAt,
-                content: this.state.content,
-                isDone: this.state.isDone,
+                startAt:new Date(),
+                endAt:new Date(),
+                content:'',
+                isDone: false,
+                id: null
             }
             this.props.addItem(Task)
             this.setState({ name: '', })
