@@ -6,8 +6,16 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
 import TaskEdit from './TaskEdit';
+import TaskDelete from './TaskDelete';
 import Checkbox from '@material-ui/core/Checkbox';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 var shortid = require('shortid');
 
 const styles = theme => ({
@@ -26,6 +34,7 @@ class TaskShow extends Component {
             checked: [1],
             item: [],
             openEdit: false,
+            openDelete: false,
             selectedTaskIndex: '',
         }
     }
@@ -33,9 +42,19 @@ class TaskShow extends Component {
     handleEditOpen = (value, index) => {
         this.setState({ item: value, openEdit: true, selectedTaskIndex: index })
     }
+
     handleToggleEditTask = () => {
         this.setState({ openEdit: !this.state.openEdit })
     }
+
+    handleToggleDeleteTask = (close) => {
+        this.setState({ openDelete: close})
+    }
+
+    handleDeleteOpen = (value, index) => {
+        this.setState({ item: value, openDelete: true, selectedTaskIndex: index })
+    }
+
     handleToggle = value => () => {
         const { checked } = this.state;
         const currentIndex = checked.indexOf(value);
@@ -55,7 +74,7 @@ class TaskShow extends Component {
 
 
     render() {
-        const { items, classes,editItem } = this.props;
+        const { items, classes, editItem, deleteItem } = this.props;
         return (
             <div className={classes.root}>
 
@@ -67,15 +86,21 @@ class TaskShow extends Component {
                                 button
                                 onClick={() => this.handleEditOpen(value, index)}
                             >
-                                <ListItemText
 
+                                <Checkbox
+                                    onChange={this.handleToggle(value.id)}
+                                    checked={this.state.checked.indexOf(value.id) !== -1}
+                                />
+
+                                <ListItemText
                                     primary={value.name} />
+
                                 <ListItemSecondaryAction>
-                                    <Checkbox
-                                        onChange={this.handleToggle(value.id)}
-                                        checked={this.state.checked.indexOf(value.id) !== -1}
-                                    />
+                                    <IconButton aria-label="Delete" onClick={() => this.handleDeleteOpen(value, index)}>
+                                        <DeleteIcon />
+                                    </IconButton>
                                 </ListItemSecondaryAction>
+
                             </ListItem>
                         )
                     }
@@ -86,6 +111,12 @@ class TaskShow extends Component {
                 <TaskEdit
                     handleToggleEditTask={this.handleToggleEditTask}
                     editItem={editItem}
+                    {...this.state}
+                />
+
+                <TaskDelete
+                    handleToggleDeleteTask={this.handleToggleDeleteTask}
+                    deleteItem={deleteItem}
                     {...this.state}
                 />
             </div>

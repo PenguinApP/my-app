@@ -53,14 +53,58 @@ class App extends Component {
     const editIndex = items.findIndex(item => item.id === id)
     const editItem = update(items, { [editIndex]: { $set: item } })
     this.setState({ items: editItem })
-      itemRef.doc(id).set({
-       name: item.name,
-       content: item.content,
-       startAt: new Date(item.startAt),
-       endAt: new Date(item.endAt)
+    itemRef.doc(id).set({
+      name: item.name,
+      content: item.content,
+      startAt: new Date(item.startAt),
+      endAt: new Date(item.endAt)
     }, { merge: true });
   }
 
+  deleteItem = (id) => {
+    let { items } = this.state
+    var index = this.state.items.findIndex(item => item.id === id)
+    //console.log(this.state.items,'before')
+    //console.log(index,'index')
+    items.splice(index, 1)
+    this.setState({ items })
+    itemRef.doc(id).delete()
+  }
+
+  onArrayUpdate(id, item) {
+    var ItemUp = this.state.items.find(item => item.id === id)
+
+    // console.log(this.state.items, 'update before')
+    // console.log(ItemUp, 'ItemUp');
+    var temp = this.state.items
+
+
+    var index = temp.findIndex(ref => ref.id === id)
+    item.startDate.toDateString()
+    var s = moment(item.startDate.toDateString()).format('YYYY-MM-DD');
+    var e = moment(item.endDate.toDateString()).format('YYYY-MM-DD');
+    console.log(s, 'New StartDate')
+    console.log(e, 'New endDate')
+
+
+    temp[index].destask = item.destask
+    temp[index].taskName = item.taskName
+    temp[index].description = item.description
+    temp[index].startDate = s
+    temp[index].endDate = e
+    temp[index].picture = item.picture
+
+    //console.log(temp, 'after')
+    var itemSort = temp.sort(function (x, y) {
+      var a = new Date(x.startDate);
+      var b = new Date(y.startDate);
+      return a - b;
+    })
+    console.log(itemSort, 'sortแล้วจ้า');
+    this.setState({
+      items: itemSort
+    });
+  }
 
   queryTask = () => {
     var items = []
@@ -101,6 +145,7 @@ class App extends Component {
 
       return a - b;
     });
+
     console.log(itemsSort)
     this.setState({
       items: itemsSort
@@ -141,6 +186,8 @@ class App extends Component {
               {...this.state}
               handleEditOpen={this.handleEditOpen}
               editItem={this.editItem}
+              deleteItem={this.deleteItem}
+              onArrayUpdate={this.onArrayUpdate}
             />
 
 
@@ -161,7 +208,7 @@ class App extends Component {
           <div className="App">
 
             <Calendar
-              items={this.state.items}
+              {...this.state}
             />
 
           </div>

@@ -23,14 +23,14 @@ class CalendarTask extends Component {
         let listData = []
         //console.log(this.props.items)
         this.props.items.map((item) => {
-            var time = moment(new Date(item.startDate)).format('MMMM Do YYYY')
+            var time = moment(new Date(item.startAt)).format('MMMM Do YYYY')
             var time2 = moment(new Date(value)).format('MMMM Do YYYY')
 
 
             if (time === time2) {
                 console.log(time, 'ตรงกัน', time2)
                 listData.push(
-                    { type: 'default', content: item.taskName },
+                    { type: 'default', content: item.name },
 
                     
                 )
