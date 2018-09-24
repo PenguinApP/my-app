@@ -25,11 +25,13 @@ class App extends Component {
       items: [],
       Category: [],
       page: 'งาน',
+      menu: 'ลบงาน',
     }
   }
   componentDidMount() {
     this.queryTask()
   }
+  
   // input
   addItem = (Task) => {
     var { items } = this.state
@@ -46,7 +48,8 @@ class App extends Component {
       .catch(function (error) {
         console.error("Error writing document: ", error);
       });
-  }
+  };
+
   editItem = (item, index) => {
     const { items } = this.state
     const id = item.id
@@ -59,7 +62,7 @@ class App extends Component {
       startAt: new Date(item.startAt),
       endAt: new Date(item.endAt)
     }, { merge: true });
-  }
+  };
 
   deleteItem = (id) => {
     let { items } = this.state
@@ -69,7 +72,7 @@ class App extends Component {
     items.splice(index, 1)
     this.setState({ items })
     itemRef.doc(id).delete()
-  }
+  };
 
   onArrayUpdate(id, item) {
     var ItemUp = this.state.items.find(item => item.id === id)
@@ -104,7 +107,7 @@ class App extends Component {
     this.setState({
       items: itemSort
     });
-  }
+  };
 
   queryTask = () => {
     var items = []
@@ -134,7 +137,7 @@ class App extends Component {
         3
         console.log("Error getting documents: ", error);
       });
-  }
+  };
 
   onSortItems = (items) => {
     var itemsSort = items.sort(function (x, y) {
@@ -150,26 +153,28 @@ class App extends Component {
     this.setState({
       items: itemsSort
     })
-  }
+  };
 
-  // categoryOpen
   handleDrawerOpen = (open) => {
     this.setState({
       open: open
     });
     console.log(open, 'Drawer')
   };
-  // editOpen
-
 
   changePage = (page) => {
     this.setState({
       page: page
     })
     console.log('Page', page)
-  }
+  };
 
-
+  changeMenu = (menu) => {
+    this.setState({
+      menu: menu
+    })
+    console.log('menu', menu)
+  };
 
   renderpage = () => {
     switch (this.state.page) {
@@ -221,6 +226,7 @@ class App extends Component {
       <div>
         <Navbar
           handleDrawerOpen={this.handleDrawerOpen}
+          changeMenu={this.changeMenu}
           {...this.state} />
 
         <Category

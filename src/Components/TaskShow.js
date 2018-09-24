@@ -4,24 +4,24 @@ import { withStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import Divider from '@material-ui/core/Divider';
 import TaskEdit from './TaskEdit';
 import TaskDelete from './TaskDelete';
 import Checkbox from '@material-ui/core/Checkbox';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import FormatListBulleted from '@material-ui/icons/FormatListBulleted';
 var shortid = require('shortid');
 
 const styles = theme => ({
     root: {
         width: '100%',
         backgroundColor: theme.palette.background.paper,
+    },
+    checked: {
+        zIndex: 1
     },
 });
 
@@ -30,7 +30,6 @@ class TaskShow extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            task: '',
             checked: [1],
             item: [],
             openEdit: false,
@@ -48,7 +47,7 @@ class TaskShow extends Component {
     }
 
     handleToggleDeleteTask = (close) => {
-        this.setState({ openDelete: close})
+        this.setState({ openDelete: close })
     }
 
     handleDeleteOpen = (value, index) => {
@@ -74,7 +73,7 @@ class TaskShow extends Component {
 
 
     render() {
-        const { items, classes, editItem, deleteItem } = this.props;
+        const { items, classes, editItem, deleteItem, menu } = this.props;
         return (
             <div className={classes.root}>
 
@@ -90,17 +89,26 @@ class TaskShow extends Component {
                                 <Checkbox
                                     onChange={this.handleToggle(value.id)}
                                     checked={this.state.checked.indexOf(value.id) !== -1}
+                                    className={classes.checked}
                                 />
 
                                 <ListItemText
                                     primary={value.name} />
 
-                                <ListItemSecondaryAction>
-                                    <IconButton aria-label="Delete" onClick={() => this.handleDeleteOpen(value, index)}>
-                                        <DeleteIcon />
-                                    </IconButton>
-                                </ListItemSecondaryAction>
-
+                                {this.props.menu === 'ลบงาน' ?
+                                    <ListItemSecondaryAction>
+                                        <IconButton aria-label="Delete" onClick={() => this.handleDeleteOpen(value, index)}>
+                                            <DeleteIcon />
+                                        </IconButton>
+                                    </ListItemSecondaryAction>
+                                    :
+                                    <ListItemSecondaryAction>
+                                        <Checkbox
+                                            onChange={this.handleToggle(value.id)}
+                                            checked={this.state.checked.indexOf(value.id) !== -1}
+                                        />
+                                    </ListItemSecondaryAction>
+                                }
                             </ListItem>
                         )
                     }
