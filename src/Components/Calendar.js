@@ -5,12 +5,23 @@ import './Calendar.css';
 import { Calendar, Badge } from 'antd';
 import moment from 'moment';
 
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+
 class CalendarTask extends Component {
     constructor(props) {
         super(props);
         this.state = {
             value: moment(),
             selectedValue: moment(),
+            open: false,
         }
         this.getListData = this.getListData.bind(this)
         this.dateCellRender = this.dateCellRender.bind(this)
@@ -32,12 +43,12 @@ class CalendarTask extends Component {
                 listData.push(
                     { type: 'default', content: item.name },
 
-                    
+
                 )
             }
         })
 
-        
+
         return listData || [];
     }
 
@@ -77,14 +88,19 @@ class CalendarTask extends Component {
         this.setState({
             value,
             selectedValue: value,
+            open: !this.state.open,
         });
-
+        console.log(value._d)
     }
 
     onPanelChange = (value) => {
         console.log(value, 'phang')
         this.setState({ value });
     }
+
+    handleClose = () => {
+        this.setState({ open: false });
+    };
 
     render() {
 
@@ -99,6 +115,44 @@ class CalendarTask extends Component {
                     onSelect={this.onSelect}
                     onPanelChange={this.onPanelChange}
                 />
+
+                <Dialog
+                    open={this.state.open}
+                    onClose={this.handleClose}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle id="alert-dialog-title">{}</DialogTitle>
+
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            {items.map((item) => {
+                                return (
+                                    <ListItem
+                                        key={item.id}
+                                    >
+                                        {items.startAt === selectedValue._d ?
+                                            <ListItemText
+                                                primary={item.name} />
+                                            :
+                                            null
+                                        }
+                                    </ListItem>
+                                )
+                            }
+                            )
+                            }
+                        </DialogContentText>
+                    </DialogContent>
+
+                    <DialogActions>
+                        <Button onClick={this.handleClose} color="primary">
+                            Close
+                        </Button>
+
+                    </DialogActions>
+                </Dialog>
+
             </div>
         )
     }

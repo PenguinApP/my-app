@@ -23,6 +23,7 @@ class App extends Component {
     super(props)
     this.state = {
       items: [],
+      itemsHistory: [],
       Category: [],
       page: 'งาน',
       menu: 'ลบงาน',
@@ -30,8 +31,9 @@ class App extends Component {
   }
   componentDidMount() {
     this.queryTask()
+    this.queryHistory()
   }
-  
+
   // input
   addItem = (Task) => {
     var { items } = this.state
@@ -49,6 +51,8 @@ class App extends Component {
         console.error("Error writing document: ", error);
       });
   };
+
+  
 
   editItem = (item, index) => {
     const { items } = this.state
@@ -112,7 +116,8 @@ class App extends Component {
   queryTask = () => {
     var items = []
     var self = this
-    itemRef.get()
+    const queryRef = itemRef.where('isDone', '==', false)
+    queryRef.get()
       .then(function (querySnapshot) {
         querySnapshot.forEach(function (doc) {
           var isd = new Date(doc.data().startAt.toDate());
@@ -139,6 +144,37 @@ class App extends Component {
       });
   };
 
+  queryHistory = () => {
+    var items = []
+    var self = this
+    const queryRef = itemRef.where('isDone', '==', true)
+    queryRef.get()
+      .then(function (querySnapshot) {
+        querySnapshot.forEach(function (doc) {
+          var isd = new Date(doc.data().startAt.toDate());
+          var ied = new Date(doc.data().endAt.toDate());
+          var Bes = isd.toDateString();
+          var Bee = ied.toDateString();
+          var sdstring = moment(Bes).format('YYYY-MM-DD');
+          var edstring = moment(Bee).format('YYYY-MM-DD');
+          items.push({
+            isDone: doc.data().isDone,
+            content: doc.data().content,
+            startAt: sdstring,
+            endAt: edstring,
+            name: doc.data().name,
+            id: doc.id,
+          })
+          //console.log(doc.id, " => ", doc.data());
+        });
+        self.onSortItemsDone(items)
+      })
+      .catch(function (error) {
+        3
+        console.log("Error getting documents: ", error);
+      });
+  };
+
   onSortItems = (items) => {
     var itemsSort = items.sort(function (x, y) {
       var a = new Date(x.startAt);
@@ -153,6 +189,35 @@ class App extends Component {
     this.setState({
       items: itemsSort
     })
+  };
+
+  onSortItemsDone = (items) => {
+    var itemsSort = items.sort(function (x, y) {
+      var a = new Date(x.endAt);
+      var b = new Date(y.endAt);
+      console.log(a);
+      console.log(b);
+
+      return a - b;
+    });
+
+    console.log(itemsSort)
+    this.setState({
+      itemsHistory: itemsSort
+    })
+  };
+
+  taskDone = (id) => {
+    let { items } = this.state
+    var index = this.state.items.findIndex(item => item.id === id)
+    //console.log(this.state.items,'before')
+    //console.log(index,'index')
+    items.splice(index, 1)
+    this.setState({ items })
+    console.log(id, 'app')
+    itemRef.doc(id).set({
+      isDone: true
+    }, { merge: true })
   };
 
   handleDrawerOpen = (open) => {
@@ -193,8 +258,8 @@ class App extends Component {
               editItem={this.editItem}
               deleteItem={this.deleteItem}
               onArrayUpdate={this.onArrayUpdate}
+              taskDone={this.taskDone}
             />
-
 
 
           </div>
@@ -204,6 +269,7 @@ class App extends Component {
           <div className="App">
 
             <History
+              {...this.state}
             />
 
           </div>

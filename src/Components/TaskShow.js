@@ -21,8 +21,9 @@ const styles = theme => ({
         backgroundColor: theme.palette.background.paper,
     },
     checked: {
-        zIndex: 1
+        textAlign: 'left',
     },
+
 });
 
 class TaskShow extends Component {
@@ -69,6 +70,7 @@ class TaskShow extends Component {
             checked: newChecked,
         });
         console.log(newChecked)
+        this.props.taskDone(value)
     };
 
 
@@ -85,12 +87,6 @@ class TaskShow extends Component {
                                 button
                                 onClick={() => this.handleEditOpen(value, index)}
                             >
-
-                                <Checkbox
-                                    onChange={this.handleToggle(value.id)}
-                                    checked={this.state.checked.indexOf(value.id) !== -1}
-                                    className={classes.checked}
-                                />
 
                                 <ListItemText
                                     primary={value.name} />
@@ -131,6 +127,7 @@ class TaskShow extends Component {
         );
     }
 }
+
 TaskShow.propTypes = {
     classes: PropTypes.object.isRequired,
 };
