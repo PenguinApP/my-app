@@ -38,7 +38,18 @@ class App extends Component {
   addItem = (Task) => {
     var { items } = this.state
     var self = this
-    const updateTask = update(items, { $push: [Task] })
+
+    var s = moment(Task.startAt.toDateString()).format('YYYY-MM-DD');
+    var e = moment(Task.endAt.toDateString()).format('YYYY-MM-DD');
+    var TaskDate = {
+      name: Task.name,
+      startAt: s,
+      endAt: e,
+      content: Task.content,
+      isDone: Task.isDone,
+      id: Task.id
+    }
+    const updateTask = update(items, { $push: [TaskDate] })
     itemRef
       .add(Task)
       .then(function (docRef) {
@@ -52,7 +63,6 @@ class App extends Component {
       });
   };
 
-  
 
   editItem = (item, index) => {
     const { items } = this.state
@@ -69,14 +79,26 @@ class App extends Component {
   };
 
   deleteItem = (id) => {
-    let { items } = this.state
-    var index = this.state.items.findIndex(item => item.id === id)
-    //console.log(this.state.items,'before')
-    //console.log(index,'index')
-    items.splice(index, 1)
-    this.setState({ items })
-    itemRef.doc(id).delete()
+    if (this.state.page === 'งาน') {
+      let { items } = this.state
+      var index = this.state.items.findIndex(item => item.id === id)
+      //console.log(this.state.items,'before')
+      //console.log(index,'index')
+      items.splice(index, 1)
+      this.setState({ items })
+      itemRef.doc(id).delete()
+    }
+    else {
+      let { itemsHistory } = this.state
+      var index = this.state.itemsHistory.findIndex(item => item.id === id)
+      //console.log(this.state.items,'before')
+      //console.log(index,'index')
+      itemsHistory.splice(index, 1)
+      this.setState({ itemsHistory })
+      itemRef.doc(id).delete()
+    }
   };
+
 
   onArrayUpdate(id, item) {
     var ItemUp = this.state.items.find(item => item.id === id)
@@ -179,13 +201,10 @@ class App extends Component {
     var itemsSort = items.sort(function (x, y) {
       var a = new Date(x.startAt);
       var b = new Date(y.startAt);
-      console.log(a);
-      console.log(b);
 
       return a - b;
     });
 
-    console.log(itemsSort)
     this.setState({
       items: itemsSort
     })
@@ -195,30 +214,32 @@ class App extends Component {
     var itemsSort = items.sort(function (x, y) {
       var a = new Date(x.endAt);
       var b = new Date(y.endAt);
-      console.log(a);
-      console.log(b);
 
       return a - b;
     });
 
-    console.log(itemsSort)
     this.setState({
       itemsHistory: itemsSort
     })
   };
 
-  taskDone = (id) => {
-    let { items } = this.state
-    var index = this.state.items.findIndex(item => item.id === id)
+  taskDone = (value) => {
+    let { items, itemsHistory } = this.state
+    var index = this.state.items.findIndex(item => item.id === value.id)
     //console.log(this.state.items,'before')
     //console.log(index,'index')
+
     items.splice(index, 1)
+    var updateHistory = update(itemsHistory, { $push: [value] })
+
+    this.onSortItemsDone(updateHistory)
     this.setState({ items })
-    console.log(id, 'app')
-    itemRef.doc(id).set({
+
+    itemRef.doc(value.id).set({
       isDone: true
     }, { merge: true })
   };
+
 
   handleDrawerOpen = (open) => {
     this.setState({
@@ -270,6 +291,7 @@ class App extends Component {
 
             <History
               {...this.state}
+              deleteItem={this.deleteItem}
             />
 
           </div>

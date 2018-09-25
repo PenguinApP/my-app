@@ -60,7 +60,7 @@ class InputItem extends Component {
     }
     handleSubmit() {
         if (!this.state.name.trim()) {
-            alert('กรอก')
+            alert('กรุณากรอกชื่องาน')
             this.setState({ name: '', })
         } else {
             var Task = {

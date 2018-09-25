@@ -4,6 +4,8 @@ import 'antd/dist/antd.css';
 import './Calendar.css';
 import { Calendar, Badge } from 'antd';
 import moment from 'moment';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
 
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -15,6 +17,14 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 
+const styles = theme => ({
+    root: {
+        width: '100%',
+        backgroundColor: theme.palette.background.paper,
+    },
+
+});
+
 class CalendarTask extends Component {
     constructor(props) {
         super(props);
@@ -22,6 +32,8 @@ class CalendarTask extends Component {
             value: moment(),
             selectedValue: moment(),
             open: false,
+            selectedDate: '',
+            items: [],
         }
         this.getListData = this.getListData.bind(this)
         this.dateCellRender = this.dateCellRender.bind(this)
@@ -39,11 +51,9 @@ class CalendarTask extends Component {
 
 
             if (time === time2) {
-                console.log(time, 'ตรงกัน', time2)
+                // console.log(time, 'ตรงกัน', time2)
                 listData.push(
                     { type: 'default', content: item.name },
-
-
                 )
             }
         })
@@ -85,12 +95,20 @@ class CalendarTask extends Component {
     }
 
     onSelect = (value) => {
+
+        var selectedDate = value._d
+
+        var D = moment(selectedDate.toDateString()).format('YYYY-MM-DD');
+
         this.setState({
             value,
             selectedValue: value,
             open: !this.state.open,
+            selectedDate: D
         });
         console.log(value._d)
+        console.log(D)
+        console.log(this.props.items)
     }
 
     onPanelChange = (value) => {
@@ -104,8 +122,8 @@ class CalendarTask extends Component {
 
     render() {
 
-        const { items } = this.props
-        const { value, selectedValue } = this.state;
+        const { items, classes } = this.props
+        const { value, selectedValue, selectedDate } = this.state;
         return (
             <div>
                 <Calendar
@@ -122,22 +140,24 @@ class CalendarTask extends Component {
                     aria-labelledby="alert-dialog-title"
                     aria-describedby="alert-dialog-description"
                 >
-                    <DialogTitle id="alert-dialog-title">{}</DialogTitle>
+                    <DialogTitle id="alert-dialog-title">{selectedDate}</DialogTitle>
 
                     <DialogContent>
                         <DialogContentText id="alert-dialog-description">
                             {items.map((item) => {
                                 return (
-                                    <ListItem
-                                        key={item.id}
-                                    >
-                                        {items.startAt === selectedValue._d ?
-                                            <ListItemText
-                                                primary={item.name} />
-                                            :
-                                            null
-                                        }
-                                    </ListItem>
+                                    <div>
+                                        {selectedDate === item.startAt ?
+                                            <ListItem
+                                                key={item.id}
+                                                button
+                                            >
+                                                <ListItemText
+                                                    primary={item.name} />
+
+                                            </ListItem>
+                                            : null}
+                                    </div>
                                 )
                             }
                             )
@@ -152,9 +172,12 @@ class CalendarTask extends Component {
 
                     </DialogActions>
                 </Dialog>
-
             </div>
         )
     }
 }
-export default CalendarTask;
+CalendarTask.propTypes = {
+    classes: PropTypes.object.isRequired,
+};
+
+export default withStyles(styles)(CalendarTask);

@@ -37,6 +37,32 @@ class History extends Component {
         }
     }
 
+    handleToggleDeleteTask = (close) => {
+        this.setState({ openDelete: close })
+    }
+
+    handleDeleteOpen = (value, index) => {
+        this.setState({ item: value, openDelete: true, selectedTaskIndex: index })
+    }
+
+    handleToggle = value => () => {
+        const { checked } = this.state;
+        const currentIndex = checked.indexOf(value);
+        const newChecked = [...checked];
+
+        if (currentIndex === -1) {
+            newChecked.push(value);
+        } else {
+            newChecked.splice(currentIndex, 1);
+        }
+
+        this.setState({
+            checked: newChecked,
+        });
+        console.log(newChecked)
+    };
+
+
     render() {
         const { itemsHistory, classes, editItem, deleteItem, menu } = this.props;
         return (
@@ -73,12 +99,6 @@ class History extends Component {
                     )
                     }
                 </List>
-
-                <TaskEdit
-                    handleToggleEditTask={this.handleToggleEditTask}
-                    editItem={editItem}
-                    {...this.state}
-                />
 
                 <TaskDelete
                     handleToggleDeleteTask={this.handleToggleDeleteTask}

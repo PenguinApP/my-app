@@ -20,9 +20,6 @@ const styles = theme => ({
         width: '100%',
         backgroundColor: theme.palette.background.paper,
     },
-    checked: {
-        textAlign: 'left',
-    },
 
 });
 
@@ -70,6 +67,7 @@ class TaskShow extends Component {
             checked: newChecked,
         });
         console.log(newChecked)
+        
         this.props.taskDone(value)
     };
 
@@ -100,8 +98,8 @@ class TaskShow extends Component {
                                     :
                                     <ListItemSecondaryAction>
                                         <Checkbox
-                                            onChange={this.handleToggle(value.id)}
-                                            checked={this.state.checked.indexOf(value.id) !== -1}
+                                            onChange={this.handleToggle(value)}
+                                            checked={this.state.checked.indexOf(value) !== -1}
                                         />
                                     </ListItemSecondaryAction>
                                 }
