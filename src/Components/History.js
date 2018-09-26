@@ -60,6 +60,8 @@ class History extends Component {
             checked: newChecked,
         });
         console.log(newChecked)
+
+        this.props.taskBack(value)
     };
 
 
@@ -88,8 +90,8 @@ class History extends Component {
                                     :
                                     <ListItemSecondaryAction>
                                         <Checkbox
-                                            onChange={this.handleToggle(value.id)}
-                                            checked={this.state.checked.indexOf(value.id) !== -1}
+                                            onChange={this.handleToggle(value)}
+                                            checked={this.state.checked.indexOf(value) !== -1}
                                         />
                                     </ListItemSecondaryAction>
                                 }

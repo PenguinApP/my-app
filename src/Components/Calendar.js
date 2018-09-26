@@ -140,13 +140,13 @@ class CalendarTask extends Component {
                     aria-labelledby="alert-dialog-title"
                     aria-describedby="alert-dialog-description"
                 >
-                    <DialogTitle id="alert-dialog-title">{selectedDate}</DialogTitle>
+                    <DialogTitle id="alert-dialog-title">{'งานวันที่ '}{selectedDate}</DialogTitle>
 
                     <DialogContent>
                         <DialogContentText id="alert-dialog-description">
                             {items.map((item) => {
                                 return (
-                                    <div>
+                                    <div className="calendar">
                                         {selectedDate === item.startAt ?
                                             <ListItem
                                                 key={item.id}
@@ -154,9 +154,9 @@ class CalendarTask extends Component {
                                             >
                                                 <ListItemText
                                                     primary={item.name} />
-
                                             </ListItem>
-                                            : null}
+                                            : null
+                                        }
                                     </div>
                                 )
                             }

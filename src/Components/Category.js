@@ -14,7 +14,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import PlaylistAdd from '@material-ui/icons/PlaylistAdd';
 import FormatListBulleted from '@material-ui/icons/FormatListBulleted';
 
-const drawerWidth = '70%';
+const drawerWidth = '300px';
 
 const styles = theme => ({
     drawerPaper: {

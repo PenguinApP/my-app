@@ -13,6 +13,8 @@ import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FormatListBulleted from '@material-ui/icons/FormatListBulleted';
+import './TaskShow.css';
+
 var shortid = require('shortid');
 
 const styles = theme => ({
@@ -67,43 +69,43 @@ class TaskShow extends Component {
             checked: newChecked,
         });
         console.log(newChecked)
-        
+
         this.props.taskDone(value)
     };
 
 
     render() {
-        const { items, classes, editItem, deleteItem, menu } = this.props;
+        const { items, classes, editItem, deleteItem, checked } = this.props;
         return (
             <div className={classes.root}>
 
                 <List component="nav">
                     {items.map((value, index) => {
                         return (
-                            <ListItem
-                                key={value.id}
-                                button
-                                onClick={() => this.handleEditOpen(value, index)}
-                            >
+                                <ListItem
+                                    key={value.id}
+                                    button
+                                    onClick={() => this.handleEditOpen(value, index)}
+                                >
 
-                                <ListItemText
-                                    primary={value.name} />
+                                    <ListItemText
+                                        primary={value.name} />
 
-                                {this.props.menu === 'ลบงาน' ?
-                                    <ListItemSecondaryAction>
-                                        <IconButton aria-label="Delete" onClick={() => this.handleDeleteOpen(value, index)}>
-                                            <DeleteIcon />
-                                        </IconButton>
-                                    </ListItemSecondaryAction>
-                                    :
-                                    <ListItemSecondaryAction>
-                                        <Checkbox
-                                            onChange={this.handleToggle(value)}
-                                            checked={this.state.checked.indexOf(value) !== -1}
-                                        />
-                                    </ListItemSecondaryAction>
-                                }
-                            </ListItem>
+                                    {this.props.menu === 'ลบงาน' ?
+                                        <ListItemSecondaryAction>
+                                            <IconButton aria-label="Delete" onClick={() => this.handleDeleteOpen(value, index)}>
+                                                <DeleteIcon />
+                                            </IconButton>
+                                        </ListItemSecondaryAction>
+                                        :
+                                        <ListItemSecondaryAction>
+                                            <Checkbox
+                                                onChange={this.handleToggle(value)}
+                                                checked={this.state.checked.indexOf(value) !== -1}
+                                            />
+                                        </ListItemSecondaryAction>
+                                    }
+                                </ListItem>
                         )
                     }
                     )

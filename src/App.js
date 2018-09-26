@@ -100,40 +100,38 @@ class App extends Component {
   };
 
 
-  onArrayUpdate(id, item) {
-    var ItemUp = this.state.items.find(item => item.id === id)
+  // onArrayUpdate(id, item) {
+  //   var ItemUp = this.state.items.find(item => item.id === id)
 
-    // console.log(this.state.items, 'update before')
-    // console.log(ItemUp, 'ItemUp');
-    var temp = this.state.items
-
-
-    var index = temp.findIndex(ref => ref.id === id)
-    item.startDate.toDateString()
-    var s = moment(item.startDate.toDateString()).format('YYYY-MM-DD');
-    var e = moment(item.endDate.toDateString()).format('YYYY-MM-DD');
-    console.log(s, 'New StartDate')
-    console.log(e, 'New endDate')
+  //   // console.log(this.state.items, 'update before')
+  //   // console.log(ItemUp, 'ItemUp');
+  //   var temp = this.state.items
 
 
-    temp[index].destask = item.destask
-    temp[index].taskName = item.taskName
-    temp[index].description = item.description
-    temp[index].startDate = s
-    temp[index].endDate = e
-    temp[index].picture = item.picture
+  //   var index = temp.findIndex(ref => ref.id === id)
+  //   item.startAt.toDateString()
+  //   var s = moment(item.startAt.toDateString()).format('YYYY-MM-DD');
+  //   var e = moment(item.endAt.toDateString()).format('YYYY-MM-DD');
+  //   console.log(s, 'New StartDate')
+  //   console.log(e, 'New endDate')
 
-    //console.log(temp, 'after')
-    var itemSort = temp.sort(function (x, y) {
-      var a = new Date(x.startDate);
-      var b = new Date(y.startDate);
-      return a - b;
-    })
-    console.log(itemSort, 'sortแล้วจ้า');
-    this.setState({
-      items: itemSort
-    });
-  };
+
+  //   temp[index].name = item.name
+  //   temp[index].content = item.content
+  //   temp[index].startAt = s
+  //   temp[index].endAt = e
+
+  //   //console.log(temp, 'after')
+  //   var itemSort = temp.sort(function (x, y) {
+  //     var a = new Date(x.startAt);
+  //     var b = new Date(y.startAt);
+  //     return a - b;
+  //   })
+  //   console.log(itemSort, 'sortแล้วจ้า');
+  //   this.setState({
+  //     items: itemSort
+  //   });
+  // };
 
   queryTask = () => {
     var items = []
@@ -240,6 +238,22 @@ class App extends Component {
     }, { merge: true })
   };
 
+  taskBack = (value) => {
+    let { items, itemsHistory } = this.state
+    var index = this.state.itemsHistory.findIndex(item => item.id === value.id)
+    //console.log(this.state.items,'before')
+    //console.log(index,'index')
+
+    itemsHistory.splice(index, 1)
+    var updateTask = update(items, { $push: [value] })
+
+    this.onSortItems(updateTask)
+    this.setState({ itemsHistory })
+
+    itemRef.doc(value.id).set({
+      isDone: false
+    }, { merge: true })
+  };
 
   handleDrawerOpen = (open) => {
     this.setState({
@@ -292,6 +306,7 @@ class App extends Component {
             <History
               {...this.state}
               deleteItem={this.deleteItem}
+              taskBack={this.taskBack}
             />
 
           </div>
@@ -321,11 +336,13 @@ class App extends Component {
           handleDrawerOpen={this.handleDrawerOpen}
           open={this.state.open} />
 
-        {this.renderpage()}
-
+        <div className="taskShow">
+          <br /><br /><br />
+          {this.renderpage()}
+        </div>
+        
         <Navigation
           changePage={this.changePage} />
-
       </div>
     )
   }
