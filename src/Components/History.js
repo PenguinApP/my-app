@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
+
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -18,8 +19,8 @@ const styles = theme => ({
         width: '100%',
         backgroundColor: theme.palette.background.paper,
     },
-    checked: {
-        textAlign: 'left',
+    text: {
+        textDecoration: 'line-through',
     },
 
 });
@@ -73,13 +74,15 @@ class History extends Component {
                 <List component="nav">
                     {itemsHistory.map((value, index) => {
                         return (
+
                             <ListItem
                                 key={value.id}
                                 button
                             >
-
                                 <ListItemText
-                                    primary={value.name} />
+                                className={classes.text}
+                                    primary={value.name}
+                                />
 
                                 {this.props.menu === 'ลบงาน' ?
                                     <ListItemSecondaryAction>
@@ -91,7 +94,7 @@ class History extends Component {
                                     <ListItemSecondaryAction>
                                         <Checkbox
                                             onChange={this.handleToggle(value)}
-                                            checked={this.state.checked.indexOf(value) !== -1}
+                                            checked={true}
                                         />
                                     </ListItemSecondaryAction>
                                 }

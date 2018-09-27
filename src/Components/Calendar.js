@@ -22,6 +22,9 @@ const styles = theme => ({
         width: '100%',
         backgroundColor: theme.palette.background.paper,
     },
+    text: {
+        textDecoration: 'line-through',
+    },
 
 });
 
@@ -49,15 +52,25 @@ class CalendarTask extends Component {
             var time = moment(new Date(item.startAt)).format('MMMM Do YYYY')
             var time2 = moment(new Date(value)).format('MMMM Do YYYY')
 
-
             if (time === time2) {
                 // console.log(time, 'ตรงกัน', time2)
                 listData.push(
-                    { type: 'default', content: item.name },
+                    { type: 'warning', content: item.name },
                 )
             }
         })
 
+        this.props.itemsHistory.map((item) => {
+            var time = moment(new Date(item.startAt)).format('MMMM Do YYYY')
+            var time2 = moment(new Date(value)).format('MMMM Do YYYY')
+
+            if (time === time2) {
+                // console.log(time, 'ตรงกัน', time2)
+                listData.push(
+                    { type: 'success', content: item.name },
+                )
+            }
+        })
 
         return listData || [];
     }
@@ -122,7 +135,7 @@ class CalendarTask extends Component {
 
     render() {
 
-        const { items, classes } = this.props
+        const { items, itemsHistory, classes } = this.props
         const { value, selectedValue, selectedDate } = this.state;
         return (
             <div>
@@ -162,6 +175,25 @@ class CalendarTask extends Component {
                             }
                             )
                             }
+                            {itemsHistory.map((item) => {
+                                return (
+                                    <div className="calendar">
+                                        {selectedDate === item.startAt ?
+                                            <ListItem
+                                                key={item.id}
+                                                button
+                                            >
+                                                <ListItemText
+                                                    className={classes.text}
+                                                    primary={item.name} />
+                                            </ListItem>
+                                            : null
+                                        }
+                                    </div>
+                                )
+                            }
+                            )
+                            }
                         </DialogContentText>
                     </DialogContent>
 
@@ -172,6 +204,7 @@ class CalendarTask extends Component {
 
                     </DialogActions>
                 </Dialog>
+
             </div>
         )
     }

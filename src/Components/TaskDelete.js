@@ -47,10 +47,10 @@ class TaskDelete extends Component {
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={() => handleToggleDeleteTask()} color="primary">
-                            Disagree
+                            ยกเลิก
             </Button>
                         <Button onClick={() => this.handleDelete(this.props.item.id, false)} color="primary" autoFocus>
-                            Agree
+                            ลบงาน
             </Button>
                     </DialogActions>
                 </Dialog>

@@ -2,18 +2,17 @@ import React, { Component } from 'react';
 
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
+
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItem from '@material-ui/core/ListItem';
-import List from '@material-ui/core/List';
-import Divider from '@material-ui/core/Divider';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
+import Paper from '@material-ui/core/Paper';
+
 import {
     Modal,
     ModalHeader,
@@ -24,16 +23,37 @@ import {
     Label,
     Input,
 } from 'reactstrap';
+
 var shortid = require('shortid');
 
-const styles = {
+const styles = theme => ({
     appBar: {
         position: 'relative',
     },
     flex: {
         flex: 1,
     },
-};
+    layout: {
+        width: 'auto',
+        marginLeft: theme.spacing.unit * 2,
+        marginRight: theme.spacing.unit * 2,
+        [theme.breakpoints.up(600 + theme.spacing.unit * 2 * 2)]: {
+            width: 600,
+            marginLeft: 'auto',
+            marginRight: 'auto',
+        },
+    },
+    paper: {
+        marginTop: theme.spacing.unit * 3,
+        marginBottom: theme.spacing.unit * 3,
+        padding: theme.spacing.unit * 2,
+        [theme.breakpoints.up(600 + theme.spacing.unit * 3 * 2)]: {
+            marginTop: theme.spacing.unit * 6,
+            marginBottom: theme.spacing.unit * 6,
+            padding: theme.spacing.unit * 3,
+        },
+    },
+});
 
 function Transition(props) {
     return <Slide direction="up" {...props} />;
@@ -69,7 +89,7 @@ class TaskEdit extends Component {
             endAt: document.getElementById("endAt").value,
             id: this.props.item.id
         }
-        this.props.editItem(item,this.props.selectedTaskIndex)
+        this.props.editItem(item, this.props.selectedTaskIndex)
         this.props.handleToggleEditTask()
         // this.props.onArrayUpdate(id, item)
         //itemRef.update(item);
@@ -129,29 +149,32 @@ class TaskEdit extends Component {
                         </Toolbar>
                     </AppBar>
 
-                    <div>
-                        <Form>
-                            <FormGroup>
-                                <Label for="taskName">ชื่องาน</Label>
-                                <Input id='name' type="text" name="taskName" defaultValue={item.name} />
-                            </FormGroup>
-                            <FormGroup>
-                                <Label for="startDate">startDate</Label>
-                                <Input id='startAt' type="date" name="startDate" defaultValue={item.startAt} />
-                            </FormGroup>
-                            {' '}
-                            <FormGroup>
-                                <Label for="endDate">endDate</Label>
-                                <Input id='endAt' type="date" name="endDate" defaultValue={item.endAt} />
-                            </FormGroup>
-                            <FormGroup>
-                                <Label for="description">คำอธิบาย</Label>
-                                <Input id='content' type="text" name="description" defaultValue={item.content} />
-                            </FormGroup>
-                        </Form>
 
+                    <main className={classes.layout}>
+                        <Paper className={classes.paper}>
 
-                    </div>
+                            <Form>
+                                <FormGroup>
+                                    <Label for="taskName">ชื่องาน</Label>
+                                    <Input id='name' type="text" name="taskName" defaultValue={item.name} />
+                                </FormGroup>
+                                <FormGroup>
+                                    <Label for="startDate">วันเริ่มงาน</Label>
+                                    <Input id='startAt' type="date" name="startDate" defaultValue={item.startAt} />
+                                </FormGroup>
+                                {' '}
+                                <FormGroup>
+                                    <Label for="endDate">วันสิ้นสุดงาน</Label>
+                                    <Input id='endAt' type="date" name="endDate" defaultValue={item.endAt} />
+                                </FormGroup>
+                                <FormGroup>
+                                    <Label for="description">คำอธิบาย</Label>
+                                    <Input id='content' type="text" name="description" defaultValue={item.content} />
+                                </FormGroup>
+                            </Form>
+                        </Paper>
+                    </main>
+
 
                 </Dialog>
             </div>

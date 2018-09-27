@@ -107,8 +107,6 @@ class InputItem extends Component {
                 <Button onClick={this.handleSubmit} variant="fab" color="primary" className={classes.button}>
                     <AddIcon />
                 </Button>
-
-
             </div>
         );
     }

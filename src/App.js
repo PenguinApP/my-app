@@ -3,17 +3,17 @@ import React, { Component } from 'react';
 import firebase, { db } from './Config/Firebase';
 import Input from './Components/Input';
 import Navigation from './Components/Navigation'
-
-import './App.css';
 import TaskShow from './Components/TaskShow';
 import Navbar from './Components/Navbar';
 import Category from './Components/Category';
 import Calendar from './Components/Calendar';
 import History from './Components/History';
-import TaskEdit from './Components/TaskEdit';
+
+
 import moment from 'moment';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import update from 'immutability-helper';
+import './App.css';
 
 const itemRef = db.collection('planTasks')
 
@@ -336,11 +336,10 @@ class App extends Component {
           handleDrawerOpen={this.handleDrawerOpen}
           open={this.state.open} />
 
-        <div className="taskShow">
-          <br /><br /><br />
-          {this.renderpage()}
-        </div>
-        
+        <br /><br /><br />
+        {this.renderpage()}
+
+
         <Navigation
           changePage={this.changePage} />
       </div>
