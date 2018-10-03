@@ -153,7 +153,7 @@ class CalendarTask extends Component {
                     aria-labelledby="alert-dialog-title"
                     aria-describedby="alert-dialog-description"
                 >
-                    <DialogTitle id="alert-dialog-title">{'งานวันที่ '}{selectedDate}</DialogTitle>
+                    <DialogTitle id="alert-dialog-title">{'งานวันที่ '}{moment(selectedValue).format('ll')}</DialogTitle>
 
                     <DialogContent>
                         <DialogContentText id="alert-dialog-description">
@@ -185,7 +185,7 @@ class CalendarTask extends Component {
                                             >
                                                 <ListItemText
                                                     className={classes.text}
-                                                    primary={item.name} />
+                                                    primary={item.name}/>
                                             </ListItem>
                                             : null
                                         }

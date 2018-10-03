@@ -134,6 +134,7 @@ class TaskEdit extends Component {
                     open={openEdit}
                     onClose={this.handleClose}
                     TransitionComponent={Transition}
+                    
                 >
                     <AppBar className={classes.appBar}>
                         <Toolbar>

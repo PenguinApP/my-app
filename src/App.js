@@ -8,6 +8,7 @@ import Navbar from './Components/Navbar';
 import Category from './Components/Category';
 import Calendar from './Components/Calendar';
 import History from './Components/History';
+import ShowButton from './Components/ShowButton';
 
 
 import moment from 'moment';
@@ -27,8 +28,10 @@ class App extends Component {
       Category: [],
       page: 'งาน',
       menu: 'ลบงาน',
+      show: 'กำลังทำ',
     }
   }
+
   componentDidMount() {
     this.queryTask()
     this.queryHistory()
@@ -69,7 +72,7 @@ class App extends Component {
     const id = item.id
     const editIndex = items.findIndex(item => item.id === id)
     const editItem = update(items, { [editIndex]: { $set: item } })
-    this.setState({ items: editItem })
+    this.onSortItems(editItem)
     itemRef.doc(id).set({
       name: item.name,
       content: item.content,
@@ -210,8 +213,8 @@ class App extends Component {
 
   onSortItemsDone = (items) => {
     var itemsSort = items.sort(function (x, y) {
-      var a = new Date(x.endAt);
-      var b = new Date(y.endAt);
+      var a = new Date(x.startAt);
+      var b = new Date(y.startAt);
 
       return a - b;
     });
@@ -276,11 +279,18 @@ class App extends Component {
     console.log('menu', menu)
   };
 
+  changeShow = (show) => {
+    this.setState({
+      show: show
+    })
+    console.log('show', show)
+  };
+
   renderpage = () => {
     switch (this.state.page) {
       case 'งาน':
         return (
-          <div className="App">
+          <div>
 
             <Input
               items={this.state.items}
@@ -296,12 +306,11 @@ class App extends Component {
               taskDone={this.taskDone}
             />
 
-
           </div>
         );
       case 'ประวัติ':
         return (
-          <div className="App">
+          <div>
 
             <History
               {...this.state}
@@ -313,7 +322,7 @@ class App extends Component {
         );
       case 'ปฏิทิน':
         return (
-          <div className="App">
+          <div>
 
             <Calendar
               {...this.state}
@@ -326,22 +335,35 @@ class App extends Component {
 
   render() {
     return (
-      <div>
+      <div class="App">
+
         <Navbar
           handleDrawerOpen={this.handleDrawerOpen}
           changeMenu={this.changeMenu}
-          {...this.state} />
+          {...this.state}
+        />
 
         <Category
           handleDrawerOpen={this.handleDrawerOpen}
-          open={this.state.open} />
+          open={this.state.open}
+        />
 
         <br /><br /><br />
+
+        <ShowButton
+          {...this.state}
+          changeShow={this.changeShow}
+
+        />
+
         {this.renderpage()}
 
+        <br /><br /><br />
 
         <Navigation
-          changePage={this.changePage} />
+          changePage={this.changePage}
+        />
+
       </div>
     )
   }

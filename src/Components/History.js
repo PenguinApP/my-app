@@ -67,7 +67,7 @@ class History extends Component {
 
 
     render() {
-        const { itemsHistory, classes, editItem, deleteItem, menu } = this.props;
+        const { itemsHistory, classes, deleteItem } = this.props;
         return (
             <div className={classes.root}>
 

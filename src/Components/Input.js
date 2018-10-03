@@ -33,6 +33,8 @@ const styles = theme => ({
     },
     button: {
         margin: theme.spacing.unit,
+        backgroundColor: '#00CCFF',
+        color: 'white',
     },
 });
 
@@ -65,9 +67,9 @@ class InputItem extends Component {
         } else {
             var Task = {
                 name: this.state.name,
-                startAt:new Date(),
-                endAt:new Date(),
-                content:'',
+                startAt: new Date(),
+                endAt: new Date(),
+                content: '',
                 isDone: false,
                 id: null
             }
@@ -104,7 +106,7 @@ class InputItem extends Component {
                         value={this.state.name}
                     />
                 </FormControl>
-                <Button onClick={this.handleSubmit} variant="fab" color="primary" className={classes.button}>
+                <Button onClick={this.handleSubmit} variant="fab" className={classes.button}>
                     <AddIcon />
                 </Button>
             </div>

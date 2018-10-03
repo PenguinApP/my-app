@@ -18,7 +18,7 @@ import Paper from '@material-ui/core/Paper';
 import FormatListBulleted from '@material-ui/icons/FormatListBulleted';
 
 import './TaskShow.css';
-
+import 'moment/locale/th';
 
 var shortid = require('shortid');
 
@@ -37,6 +37,7 @@ const styles = theme => ({
             marginRight: 'auto',
         },
     },
+
 });
 
 class TaskShow extends Component {
@@ -95,7 +96,6 @@ class TaskShow extends Component {
 
                 <main className={classes.layout}>
 
-
                     <List component="nav">
                         {items.map((value, index) => {
                             return (
@@ -105,10 +105,9 @@ class TaskShow extends Component {
                                     button
                                     onClick={() => this.handleEditOpen(value, index)}
                                 >
-
                                     <ListItemText
                                         primary={value.name}
-                                        secondary={moment(value.endAt).format('ll')} />
+                                        secondary={moment(value.startAt).format('ll')} />
 
                                     {this.props.menu === 'ลบงาน' ?
                                         <ListItemSecondaryAction>
@@ -132,6 +131,7 @@ class TaskShow extends Component {
                         )
                         }
                     </List>
+
 
                 </main>
                 <TaskEdit

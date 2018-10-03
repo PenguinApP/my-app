@@ -26,6 +26,9 @@ const styles = {
         marginLeft: -12,
         marginRight: 20,
     },
+    navbar: {
+        backgroundColor: '#00CCFF',
+    },
 };
 
 
@@ -52,19 +55,47 @@ class Navbar extends Component {
     handleMenu = (menu) => {
         this.setState({ Menu: menu });
 
-        this.props.changeMenu(menu)
+        this.props.changeShow(menu)
     };
 
     handleMenuChange = (e) => {
         this.setState({ size: e.target.value });
     }
 
+    renderMenu = () => {
+        switch (this.props.page) {
+            case 'งาน':
+                return (
+
+                    <Radio.Group value={this.props.menu} onChange={this.handleMenuChange}>
+                        <Radio.Button value={'งานเสร็จ'} onClick={() => this.handleMenu('งานเสร็จ')}>งานเสร็จสิ้น</Radio.Button>
+                        <Radio.Button value={'ลบงาน'} onClick={() => this.handleMenu('ลบงาน')}>ลบงาน</Radio.Button>
+                    </Radio.Group>
+
+                );
+            case 'ประวัติ':
+                return (
+                    
+                        <Radio.Group value={this.props.menu} onChange={this.handleMenuChange}>
+                            <Radio.Button value={'งานเสร็จ'} onClick={() => this.handleMenu('งานเสร็จ')}>แก้ไขประวัติ</Radio.Button>
+                            <Radio.Button value={'ลบงาน'} onClick={() => this.handleMenu('ลบงาน')}>ลบประวัติ</Radio.Button>
+                        </Radio.Group>
+                    
+                );
+            case 'ปฏิทิน':
+                return (
+                    null
+                );
+        }
+
+    }
+
     render() {
-        const { anchorEl, Menu } = this.state;
+        const { anchorEl } = this.state;
         const { classes, page } = this.props;
         return (
             <div className={classes.root}>
-                <AppBar position="fixed">
+                <AppBar position="fixed" className={classes.navbar}>
                     <Toolbar>
 
                         <IconButton onClick={() => this.handleDrawerOpen(true)} className={classes.menuButton} color="inherit" aria-label="Menu">
@@ -72,28 +103,13 @@ class Navbar extends Component {
                         </IconButton>
 
                         <Typography variant="title" color="inherit" className={classes.flex}>
-                            {this.props.page}
+                            {page}
                         </Typography>
 
-                        {page === 'งาน' || page === 'ประวัติ' ?
-                            <Radio.Group value={Menu} onChange={this.handleMenuChange}>
-                                <Radio.Button value={'งานเสร็จ'} onClick={() => this.handleMenu('งานเสร็จ')}>งานเสร็จสิ้น</Radio.Button>
-                                <Radio.Button value={'ลบงาน'} onClick={() => this.handleMenu('ลบงาน')}>ลบงาน</Radio.Button>
-                            </Radio.Group> : null
-                        }
-
-                        <IconButton
-                            aria-owns={anchorEl ? 'simple-menu' : null}
-                            aria-haspopup="true"
-                            color="inherit"
-                        // onClick={this.handleMenuOpen}
-                        >
-                            <MoreVertIcon />
-                        </IconButton>
+                        {this.renderMenu()}
 
                     </Toolbar>
                 </AppBar>
-
 
 
                 {/* <Menu
