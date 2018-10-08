@@ -55,7 +55,7 @@ class Navbar extends Component {
     handleMenu = (menu) => {
         this.setState({ Menu: menu });
 
-        this.props.changeShow(menu)
+        this.props.changeMenu(menu)
     };
 
     handleMenuChange = (e) => {

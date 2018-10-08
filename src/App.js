@@ -292,6 +292,12 @@ class App extends Component {
         return (
           <div>
 
+            <ShowButton
+              {...this.state}
+              changeShow={this.changeShow}
+
+            />
+
             <Input
               items={this.state.items}
               addItem={this.addItem}
@@ -349,12 +355,6 @@ class App extends Component {
         />
 
         <br /><br /><br />
-
-        <ShowButton
-          {...this.state}
-          changeShow={this.changeShow}
-
-        />
 
         {this.renderpage()}
 
