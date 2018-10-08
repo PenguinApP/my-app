@@ -284,7 +284,6 @@ class App extends Component {
     this.setState({
       show: show
     })
-    console.log('show', show)
   };
 
   renderpage = () => {
@@ -323,6 +322,7 @@ class App extends Component {
             <History
               {...this.state}
               deleteItem={this.deleteItem}
+              editItem={this.editItem}
               taskBack={this.taskBack}
             />
 
@@ -333,6 +333,7 @@ class App extends Component {
           <div>
 
             <Calendar
+
               {...this.state}
             />
 

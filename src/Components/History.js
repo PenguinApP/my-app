@@ -48,6 +48,14 @@ class History extends Component {
         }
     }
 
+    handleEditOpen = (value, index) => {
+        this.setState({ item: value, openEdit: true, selectedTaskIndex: index })
+    }
+
+    handleToggleEditTask = () => {
+        this.setState({ openEdit: !this.state.openEdit })
+    }
+
     handleToggleDeleteTask = (close) => {
         this.setState({ openDelete: close })
     }
@@ -56,28 +64,8 @@ class History extends Component {
         this.setState({ item: value, openDelete: true, selectedTaskIndex: index })
     }
 
-    handleToggle = value => () => {
-        const { checked } = this.state;
-        const currentIndex = checked.indexOf(value);
-        const newChecked = [...checked];
-
-        if (currentIndex === -1) {
-            newChecked.push(value);
-        } else {
-            newChecked.splice(currentIndex, 1);
-        }
-
-        this.setState({
-            checked: newChecked,
-        });
-        console.log(newChecked)
-
-        this.props.taskBack(value)
-    };
-
-
     render() {
-        const { itemsHistory, classes, deleteItem } = this.props;
+        const { itemsHistory, classes, deleteItem, editItem } = this.props;
         return (
             <div className={classes.root}>
                 <main className={classes.layout}>
@@ -88,10 +76,12 @@ class History extends Component {
                                 <ListItem
                                     key={value.id}
                                     button
+                                    onClick={() => this.handleEditOpen(value, index)}
                                 >
                                     <ListItemText
                                         className={classes.text}
                                         primary={value.name}
+
                                     />
 
                                     <ListItemSecondaryAction>
@@ -108,11 +98,18 @@ class History extends Component {
                         }
                     </List>
 
+                    <TaskEdit
+                        handleToggleEditTask={this.handleToggleEditTask}
+                        editItem={editItem}
+                        {...this.state}
+                    />
+
                     <TaskDelete
                         handleToggleDeleteTask={this.handleToggleDeleteTask}
                         deleteItem={deleteItem}
                         {...this.state}
                     />
+
                 </main>
             </div>
         )

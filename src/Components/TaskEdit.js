@@ -151,29 +151,52 @@ class TaskEdit extends Component {
                         </Toolbar>
                     </AppBar>
 
-
                     <main className={classes.layout}>
                         <Paper className={classes.paper}>
+                            {item.isDone === false ?
+                                <Form>
+                                    <FormGroup>
+                                        <Label for="taskName">ชื่องาน</Label>
+                                        <Input id='name' type="text" name="taskName" defaultValue={item.name} />
+                                    </FormGroup>
+                                    <FormGroup>
+                                        <Label for="startDate">วันเริ่มงาน</Label>
+                                        <Input id='startAt' type="date" name="startDate" defaultValue={item.startAt} />
+                                    </FormGroup>
+                                    {' '}
+                                    <FormGroup>
+                                        <Label for="endDate">วันสิ้นสุดงาน</Label>
+                                        <Input id='endAt' type="date" name="endDate" defaultValue={item.endAt} />
+                                    </FormGroup>
+                                    <FormGroup>
+                                        <Label for="description">คำอธิบาย</Label>
+                                        <Input id='content' type="textarea" name="description" defaultValue={item.content} />
+                                    </FormGroup>
+                                </Form>
 
-                            <Form>
-                                <FormGroup>
-                                    <Label for="taskName">ชื่องาน</Label>
-                                    <Input id='name' type="text" name="taskName" defaultValue={item.name} />
-                                </FormGroup>
-                                <FormGroup>
-                                    <Label for="startDate">วันเริ่มงาน</Label>
-                                    <Input id='startAt' type="date" name="startDate" defaultValue={item.startAt} />
-                                </FormGroup>
-                                {' '}
-                                <FormGroup>
-                                    <Label for="endDate">วันสิ้นสุดงาน</Label>
-                                    <Input id='endAt' type="date" name="endDate" defaultValue={item.endAt} />
-                                </FormGroup>
-                                <FormGroup>
-                                    <Label for="description">คำอธิบาย</Label>
-                                    <Input id='content' type="text" name="description" defaultValue={item.content} />
-                                </FormGroup>
-                            </Form>
+                                :
+
+                                <Form>
+                                    <FormGroup>
+                                        <Label for="taskName">ชื่องาน</Label>
+                                        <Input id='name' type="text" name="taskName" value={item.name} />
+                                    </FormGroup>
+                                    <FormGroup>
+                                        <Label for="startDate">วันเริ่มงาน</Label>
+                                        <Input id='startAt' type="text" name="startDate" value={item.startAt} />
+                                    </FormGroup>
+                                    {' '}
+                                    <FormGroup>
+                                        <Label for="endDate">วันสิ้นสุดงาน</Label>
+                                        <Input id='endAt' type="text" name="endDate" value={item.endAt} />
+                                    </FormGroup>
+                                    <FormGroup>
+                                        <Label for="description">คำอธิบาย</Label>
+                                        <Input id='content' type="textarea" name="description" value={item.content} />
+                                    </FormGroup>
+                                </Form>
+
+                            }
                         </Paper>
                     </main>
 

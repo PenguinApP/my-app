@@ -119,6 +119,8 @@ class CalendarTask extends Component {
             open: !this.state.open,
             selectedDate: D
         });
+
+        
         console.log(value._d)
         console.log(D)
         console.log(this.props.items)

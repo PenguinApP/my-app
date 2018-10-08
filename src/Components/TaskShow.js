@@ -150,15 +150,16 @@ class TaskShow extends Component {
                         }
                         )
                         }
-<br/>
 
+                        <br />
+                        
                         {show === 'ทั้งหมด' ?
                             <div>
                                 <Divider />
                                 <Typography variant="caption" gutterBottom>
                                     งานที่เสร็จแล้ว
-      </Typography>
-<br/>
+                                </Typography>
+                                <br />
                                 {itemsHistory.map((value, index) => {
                                     return (
                                         <ListItem
