@@ -75,12 +75,9 @@ class Navbar extends Component {
                 );
             case 'ประวัติ':
                 return (
-                    
-                        <Radio.Group value={this.props.menu} onChange={this.handleMenuChange}>
-                            <Radio.Button value={'งานเสร็จ'} onClick={() => this.handleMenu('งานเสร็จ')}>แก้ไขประวัติ</Radio.Button>
-                            <Radio.Button value={'ลบงาน'} onClick={() => this.handleMenu('ลบงาน')}>ลบประวัติ</Radio.Button>
-                        </Radio.Group>
-                    
+
+                    null
+
                 );
             case 'ปฏิทิน':
                 return (

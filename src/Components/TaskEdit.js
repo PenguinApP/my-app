@@ -29,6 +29,7 @@ var shortid = require('shortid');
 const styles = theme => ({
     appBar: {
         position: 'relative',
+        backgroundColor: '#00CCFF'
     },
     flex: {
         flex: 1,
@@ -134,7 +135,7 @@ class TaskEdit extends Component {
                     open={openEdit}
                     onClose={this.handleClose}
                     TransitionComponent={Transition}
-                    
+
                 >
                     <AppBar className={classes.appBar}>
                         <Toolbar>

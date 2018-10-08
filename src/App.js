@@ -35,6 +35,7 @@ class App extends Component {
   componentDidMount() {
     this.queryTask()
     this.queryHistory()
+    console.log(new Date())
   }
 
   // input
@@ -310,6 +311,7 @@ class App extends Component {
               deleteItem={this.deleteItem}
               onArrayUpdate={this.onArrayUpdate}
               taskDone={this.taskDone}
+              taskBack={this.taskBack}
             />
 
           </div>

@@ -16,6 +16,8 @@ import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Paper from '@material-ui/core/Paper';
 import FormatListBulleted from '@material-ui/icons/FormatListBulleted';
+import Divider from '@material-ui/core/Divider';
+import Typography from '@material-ui/core/Typography';
 
 import './TaskShow.css';
 import 'moment/locale/th';
@@ -36,6 +38,9 @@ const styles = theme => ({
             marginLeft: 'auto',
             marginRight: 'auto',
         },
+    },
+    text: {
+        textDecoration: 'line-through',
     },
 
 });
@@ -88,9 +93,27 @@ class TaskShow extends Component {
         this.props.taskDone(value)
     };
 
+    handleToggleHistory = value => () => {
+        const { checked } = this.state;
+        const currentIndex = checked.indexOf(value);
+        const newChecked = [...checked];
+
+        if (currentIndex === -1) {
+            newChecked.push(value);
+        } else {
+            newChecked.splice(currentIndex, 1);
+        }
+
+        this.setState({
+            checked: newChecked,
+        });
+        console.log(newChecked)
+
+        this.props.taskBack(value)
+    };
 
     render() {
-        const { items, classes, editItem, deleteItem } = this.props;
+        const { items, classes, editItem, deleteItem, itemsHistory, show } = this.props;
         return (
             <div className={classes.root}>
 
@@ -99,7 +122,6 @@ class TaskShow extends Component {
                     <List component="nav">
                         {items.map((value, index) => {
                             return (
-
                                 <ListItem
                                     key={value.id}
                                     button
@@ -119,17 +141,56 @@ class TaskShow extends Component {
                                         <ListItemSecondaryAction>
                                             <Checkbox
                                                 onChange={this.handleToggle(value)}
-                                                checked={this.state.checked.indexOf(value) !== -1}
+                                                checked={false}
                                             />
                                         </ListItemSecondaryAction>
                                     }
-                                    
                                 </ListItem>
-
                             )
                         }
                         )
                         }
+<br/>
+
+                        {show === 'ทั้งหมด' ?
+                            <div>
+                                <Divider />
+                                <Typography variant="caption" gutterBottom>
+                                    งานที่เสร็จแล้ว
+      </Typography>
+<br/>
+                                {itemsHistory.map((value, index) => {
+                                    return (
+                                        <ListItem
+                                            key={value.id}
+                                            button
+                                            onClick={() => this.handleEditOpen(value, index)}
+                                        >
+                                            <ListItemText
+                                                className={classes.text}
+                                                primary={value.name}
+                                            />
+
+                                            {this.props.menu === 'ลบงาน' ?
+                                                <ListItemSecondaryAction>
+                                                    <IconButton aria-label="Delete" onClick={() => this.handleDeleteOpen(value, index)}>
+                                                        <DeleteIcon />
+                                                    </IconButton>
+                                                </ListItemSecondaryAction>
+                                                :
+                                                <ListItemSecondaryAction>
+                                                    <Checkbox
+                                                        onChange={this.handleToggleHistory(value)}
+                                                        checked={true}
+                                                    />
+                                                </ListItemSecondaryAction>
+                                            }
+                                        </ListItem>
+                                    )
+                                }
+                                )
+                                }</div> : null}
+
                     </List>
 
 

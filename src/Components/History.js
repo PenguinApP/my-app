@@ -19,6 +19,16 @@ const styles = theme => ({
         width: '100%',
         backgroundColor: theme.palette.background.paper,
     },
+    layout: {
+        width: 'auto',
+        marginLeft: theme.spacing.unit * 2,
+        marginRight: theme.spacing.unit * 2,
+        [theme.breakpoints.up(600 + theme.spacing.unit * 2 * 2)]: {
+            width: 800,
+            marginLeft: 'auto',
+            marginRight: 'auto',
+        },
+    },
     text: {
         textDecoration: 'line-through',
     },
@@ -70,46 +80,40 @@ class History extends Component {
         const { itemsHistory, classes, deleteItem } = this.props;
         return (
             <div className={classes.root}>
+                <main className={classes.layout}>
+                    <List component="nav">
+                        {itemsHistory.map((value, index) => {
+                            return (
 
-                <List component="nav">
-                    {itemsHistory.map((value, index) => {
-                        return (
+                                <ListItem
+                                    key={value.id}
+                                    button
+                                >
+                                    <ListItemText
+                                        className={classes.text}
+                                        primary={value.name}
+                                    />
 
-                            <ListItem
-                                key={value.id}
-                                button
-                            >
-                                <ListItemText
-                                className={classes.text}
-                                    primary={value.name}
-                                />
-
-                                {this.props.menu === 'ลบงาน' ?
                                     <ListItemSecondaryAction>
                                         <IconButton aria-label="Delete" onClick={() => this.handleDeleteOpen(value, index)}>
                                             <DeleteIcon />
                                         </IconButton>
                                     </ListItemSecondaryAction>
-                                    :
-                                    <ListItemSecondaryAction>
-                                        <Checkbox
-                                            onChange={this.handleToggle(value)}
-                                            checked={true}
-                                        />
-                                    </ListItemSecondaryAction>
-                                }
-                            </ListItem>
-                        )
-                    }
-                    )
-                    }
-                </List>
 
-                <TaskDelete
-                    handleToggleDeleteTask={this.handleToggleDeleteTask}
-                    deleteItem={deleteItem}
-                    {...this.state}
-                />
+
+                                </ListItem>
+                            )
+                        }
+                        )
+                        }
+                    </List>
+
+                    <TaskDelete
+                        handleToggleDeleteTask={this.handleToggleDeleteTask}
+                        deleteItem={deleteItem}
+                        {...this.state}
+                    />
+                </main>
             </div>
         )
     }
