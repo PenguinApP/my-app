@@ -23,18 +23,18 @@ class TaskDelete extends Component {
         }
     }
 
-    handleDelete(id, close) {
-        this.props.deleteItem(id)
+    handleDelete(item, close) {
+        this.props.deleteItem(item)
         this.props.handleToggleDeleteTask(close)
     }
 
     render() {
-        const { openEdit, handleToggleDeleteTask } = this.props;
+        const { handleToggleDeleteTask, item, openDelete } = this.props;
 
         return (
             <div>
                 <Dialog
-                    open={this.props.openDelete}
+                    open={openDelete}
                     onClose={this.handleClose}
                     aria-labelledby="alert-dialog-title"
                     aria-describedby="alert-dialog-description"
@@ -49,7 +49,7 @@ class TaskDelete extends Component {
                         <Button onClick={() => handleToggleDeleteTask()} color="primary">
                             ยกเลิก
             </Button>
-                        <Button onClick={() => this.handleDelete(this.props.item.id, false)} color="primary" autoFocus>
+                        <Button onClick={() => this.handleDelete(item, false)} color="primary" autoFocus>
                             ลบงาน
             </Button>
                     </DialogActions>

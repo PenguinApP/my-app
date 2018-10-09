@@ -81,24 +81,24 @@ class App extends Component {
     }, { merge: true });
   };
 
-  deleteItem = (id) => {
-    if (this.state.page === 'งาน') {
+  deleteItem = (itemTask) => {
+    if (itemTask.isDone === false) {
       let { items } = this.state
-      var index = this.state.items.findIndex(item => item.id === id)
+      var index = this.state.items.findIndex(item => item.id === itemTask.id)
       //console.log(this.state.items,'before')
       //console.log(index,'index')
       items.splice(index, 1)
       this.setState({ items })
-      itemRef.doc(id).delete()
+      itemRef.doc(itemTask.id).delete()
     }
     else {
       let { itemsHistory } = this.state
-      var index = this.state.itemsHistory.findIndex(item => item.id === id)
+      var index = this.state.itemsHistory.findIndex(item => item.id === itemTask.id)
       //console.log(this.state.items,'before')
       //console.log(index,'index')
       itemsHistory.splice(index, 1)
       this.setState({ itemsHistory })
-      itemRef.doc(id).delete()
+      itemRef.doc(itemTask.id).delete()
     }
   };
 
@@ -212,6 +212,7 @@ class App extends Component {
   };
 
   onSortItemsDone = (items) => {
+    let {itemsHistory} = this.state
     var itemsSort = items.sort(function (x, y) {
       var a = new Date(x.startAt);
       var b = new Date(y.startAt);
@@ -222,6 +223,7 @@ class App extends Component {
     this.setState({
       itemsHistory: itemsSort
     })
+    console.log(itemsHistory)
   };
 
   taskDone = (value) => {
@@ -235,7 +237,7 @@ class App extends Component {
 
     this.onSortItemsDone(updateHistory)
     this.setState({ items })
-
+    console.log(items)
     itemRef.doc(value.id).set({
       isDone: true
     }, { merge: true })
