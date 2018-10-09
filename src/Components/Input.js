@@ -14,8 +14,8 @@ var shortid = require('shortid');
 
 const styles = theme => ({
     container: {
-        // display: 'flex',
-        // flexWrap: 'wrap',
+        margin: 'auto',
+        width: '100%',
     },
     margin: {
         margin: theme.spacing.unit,

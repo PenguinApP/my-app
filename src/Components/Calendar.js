@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import firebase, { auth, db } from '../Config/Firebase';
+
+import TaskEdit from './TaskEdit';
+
 import 'antd/dist/antd.css';
 import './Calendar.css';
 import { Calendar, Badge } from 'antd';
 import moment from 'moment';
+
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -16,6 +19,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+
 
 const styles = theme => ({
     root: {
@@ -137,7 +141,7 @@ class CalendarTask extends Component {
 
     render() {
 
-        const { items, itemsHistory, classes } = this.props
+        const { items, itemsHistory, classes, editItem } = this.props
         const { value, selectedValue, selectedDate } = this.state;
         return (
             <div>
@@ -206,6 +210,8 @@ class CalendarTask extends Component {
 
                     </DialogActions>
                 </Dialog>
+
+                
 
             </div>
         )

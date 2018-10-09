@@ -33,8 +33,8 @@ const styles = theme => ({
         width: 'auto',
         marginLeft: theme.spacing.unit * 2,
         marginRight: theme.spacing.unit * 2,
-        [theme.breakpoints.up(600 + theme.spacing.unit * 2 * 2)]: {
-            width: 800,
+        [theme.breakpoints.up(1000 + theme.spacing.unit * 2 * 2)]: {
+            width: 1000,
             marginLeft: 'auto',
             marginRight: 'auto',
         },
