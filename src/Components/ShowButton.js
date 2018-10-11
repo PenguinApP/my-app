@@ -34,9 +34,7 @@ class ShowButtton extends Component {
     }
 
     handleShowButton = (menu) => {
-        this.setState({ Menu: menu });
-
-        this.props.changeShow(menu)
+        this.props.onFilterTask(menu)
     };
 
     render() {
@@ -44,9 +42,9 @@ class ShowButtton extends Component {
 
         return (
             <div>
-                <Radio.Group value={this.props.show} onChange={this.handleMenuChange}>
-                    <Radio.Button value={'ทั้งหมด'} onClick={() => this.handleShowButton('ทั้งหมด')}>แสดงงานทั้งหมด</Radio.Button>
-                    <Radio.Button value={'กำลังทำ'} onClick={() => this.handleShowButton('กำลังทำ')}>แสดงงานที่กำลังดำเนินงาน</Radio.Button>
+                <Radio.Group value={this.props.filterTaskType} onChange={this.handleMenuChange}>
+                    <Radio.Button value={'SHOW_ALL'} onClick={() => this.handleShowButton('SHOW_ALL')}>แสดงงานทั้งหมด</Radio.Button>
+                    <Radio.Button value={'SHOW_ACTIVATE'} onClick={() => this.handleShowButton('SHOW_ACTIVATE')}>แสดงงานที่กำลังดำเนินงาน</Radio.Button>
                 </Radio.Group>
             </div>
         );

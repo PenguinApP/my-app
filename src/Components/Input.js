@@ -22,13 +22,13 @@ const styles = theme => ({
     },
     cssLabel: {
         '&$cssFocused': {
-            color: purple[500],
+            color: '#00CCFF',
         },
     },
     cssFocused: {},
     cssUnderline: {
         '&:after': {
-            borderBottomColor: purple[500],
+            borderBottomColor: '#00CCFF',
         },
     },
     button: {

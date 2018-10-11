@@ -91,30 +91,31 @@ class TaskShow extends Component {
         });
         console.log(newChecked)
 
+
         this.props.taskDone(value)
     };
 
-    handleToggleHistory = value => () => {
-        const { checked } = this.state;
-        const currentIndex = checked.indexOf(value);
-        const newChecked = [...checked];
+    // handleToggleHistory = value => () => {
+    //     const { checked } = this.state;
+    //     const currentIndex = checked.indexOf(value);
+    //     const newChecked = [...checked];
 
-        if (currentIndex === -1) {
-            newChecked.push(value);
-        } else {
-            newChecked.splice(currentIndex, 1);
-        }
+    //     if (currentIndex === -1) {
+    //         newChecked.push(value);
+    //     } else {
+    //         newChecked.splice(currentIndex, 1);
+    //     }
 
-        this.setState({
-            checked: newChecked,
-        });
-        console.log(newChecked)
+    //     this.setState({
+    //         checked: newChecked,
+    //     });
+    //     console.log(newChecked)
 
-        this.props.taskUnDone(value)
-    };
+    //     this.props.taskUnDone(value)
+    // };
 
     render() {
-        const { items, classes, editItem, deleteItem, itemsHistory, show } = this.props;
+        const { showItems, items, classes, editItem, deleteItem, itemsHistory, show } = this.props;
         return (
             <div className={classes.root}>
 
@@ -142,7 +143,7 @@ class TaskShow extends Component {
                                         <ListItemSecondaryAction>
                                             <Checkbox
                                                 onChange={this.handleToggle(value)}
-                                                checked={false}
+                                                checked={value.isDone}
                                             />
                                         </ListItemSecondaryAction>
                                     }
@@ -151,48 +152,7 @@ class TaskShow extends Component {
                         }
                         )
                         }
-
                         <br />
-                        
-                        {show === 'ทั้งหมด' ?
-                            <div>
-                                <Divider />
-                                <Typography variant="caption" gutterBottom>
-                                    งานที่เสร็จแล้ว
-                                </Typography>
-                                <br />
-                                {itemsHistory.map((value, index) => {
-                                    return (
-                                        <ListItem
-                                            key={value.id}
-                                            button
-                                            onClick={() => this.handleEditOpen(value, index)}
-                                        >
-                                            <ListItemText
-                                                className={classes.text}
-                                                primary={value.name}
-                                            />
-
-                                            {this.props.menu === 'ลบงาน' ?
-                                                <ListItemSecondaryAction>
-                                                    <IconButton aria-label="Delete" onClick={() => this.handleDeleteOpen(value, index)}>
-                                                        <DeleteIcon />
-                                                    </IconButton>
-                                                </ListItemSecondaryAction>
-                                                :
-                                                <ListItemSecondaryAction>
-                                                    <Checkbox
-                                                        onChange={this.handleToggleHistory(value)}
-                                                        checked={true}
-                                                    />
-                                                </ListItemSecondaryAction>
-                                            }
-                                        </ListItem>
-                                    )
-                                }
-                                )
-                                }</div> : null}
-
                     </List>
 
 

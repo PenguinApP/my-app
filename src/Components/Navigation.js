@@ -12,8 +12,10 @@ const styles = {
     root: {
         position: 'fixed',
         width: '100%',
-        bottom: 0
-
+        bottom: 0,
+    },
+    selected: {
+        color: '#00CCFF',
     },
 };
 

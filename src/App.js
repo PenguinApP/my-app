@@ -24,11 +24,12 @@ class App extends Component {
     super(props)
     this.state = {
       items: [],
+      showItems: [],
       itemsHistory: [],
       Category: [],
       page: 'งาน',
       menu: 'ลบงาน',
-      show: 'กำลังทำ',
+      filterTaskType: 'SHOW_ALL'
     }
   }
 
@@ -39,7 +40,7 @@ class App extends Component {
 
   // input
   addItem = (Task) => {
-    var { items } = this.state
+    var { items, showItems } = this.state
     var self = this
 
     var s = moment(Task.startAt.toDateString()).format('YYYY-MM-DD');
@@ -52,7 +53,9 @@ class App extends Component {
       isDone: Task.isDone,
       id: Task.id
     }
+
     const updateTask = update(items, { $push: [TaskDate] })
+
     itemRef
       .add(Task)
       .then(function (docRef) {
@@ -82,24 +85,24 @@ class App extends Component {
   };
 
   deleteItem = (itemTask) => {
-    if (itemTask.isDone === false) {
-      let { items } = this.state
-      var index = this.state.items.findIndex(item => item.id === itemTask.id)
-      //console.log(this.state.items,'before')
-      //console.log(index,'index')
-      items.splice(index, 1)
-      this.setState({ items })
-      itemRef.doc(itemTask.id).delete()
-    }
-    else {
-      let { itemsHistory } = this.state
-      var index = this.state.itemsHistory.findIndex(item => item.id === itemTask.id)
-      //console.log(this.state.items,'before')
-      //console.log(index,'index')
-      itemsHistory.splice(index, 1)
-      this.setState({ itemsHistory })
-      itemRef.doc(itemTask.id).delete()
-    }
+    (itemTask.isDone === false)
+    let { items } = this.state
+    var index = this.state.items.findIndex(item => item.id === itemTask.id)
+    //console.log(this.state.items,'before')
+    //console.log(index,'index')
+    items.splice(index, 1)
+    this.setState({ items })
+    itemRef.doc(itemTask.id).delete()
+
+    //   else {
+    //     let { itemsHistory } = this.state
+    //     var index = this.state.itemsHistory.findIndex(item => item.id === itemTask.id)
+    //     //console.log(this.state.items,'before')
+    //     //console.log(index,'index')
+    //     itemsHistory.splice(index, 1)
+    //     this.setState({ itemsHistory })
+    //     itemRef.doc(itemTask.id).delete()
+    //   }
   };
 
 
@@ -139,7 +142,7 @@ class App extends Component {
   queryTask = () => {
     var items = []
     var self = this
-    const queryRef = itemRef.where('isDone', '==', false)
+    const queryRef = itemRef
     queryRef.get()
       .then(function (querySnapshot) {
         querySnapshot.forEach(function (doc) {
@@ -159,7 +162,10 @@ class App extends Component {
           })
           //console.log(doc.id, " => ", doc.data());
         });
-        self.onSortItems(items)
+        self.setState({ items }, () => {
+          self.onFilterTask(self.state.filterTaskType)
+        })
+
       })
       .catch(function (error) {
         3
@@ -233,50 +239,67 @@ class App extends Component {
     //console.log(this.state.items,'before')
     //console.log(index,'index')
 
-    items.splice(index, 1)
-
     var TaskDone = {
       name: value.name,
       startAt: value.startAt,
       endAt: value.endAt,
       content: value.content,
-      isDone: true,
+      isDone: !value.isDone,
       id: value.id
     }
 
-    var updateHistory = update(itemsHistory, { $push: [TaskDone] })
+    var updateHistory = update(itemsHistory, { $set: [TaskDone] })
 
     this.onSortItemsDone(updateHistory)
+    this.onSortItems(updateHistory)
     this.setState({ items })
     itemRef.doc(value.id).set({
       isDone: true
     }, { merge: true })
   };
 
-  taskUnDone = (value) => {
-    let { items, itemsHistory } = this.state
-    var index = this.state.itemsHistory.findIndex(item => item.id === value.id)
-    //console.log(this.state.items,'before')
-    //console.log(index,'index')
+  // taskUnDone = (value) => {
+  //   let { items, itemsHistory } = this.state
+  //   var index = this.state.itemsHistory.findIndex(item => item.id === value.id)
+  //   //console.log(this.state.items,'before')
+  //   //console.log(index,'index')
 
-    itemsHistory.splice(index, 1)
+  //   items.splice(index, 1)
 
-    var TaskUnDone = {
-      name: value.name,
-      startAt: value.startAt,
-      endAt: value.endAt,
-      content: value.content,
-      isDone: false,
-      id: value.id
+  //   var TaskUnDone = {
+  //     name: value.name,
+  //     startAt: value.startAt,
+  //     endAt: value.endAt,
+  //     content: value.content,
+  //     isDone: false,
+  //     id: value.id
+  //   }
+
+  //   var updateTask = update(items, { $push: [TaskUnDone] })
+
+  //   this.onSortItems(updateTask)
+  //   this.setState({ itemsHistory })
+  //   itemRef.doc(value.id).set({
+  //     isDone: false
+  //   }, { merge: true })
+  // };
+
+  onFilterTask = (filterTaskType) => {
+    const { items } = this.state
+    this.setState({ filterTaskType })
+    switch (filterTaskType) {
+      case 'SHOW_ALL':
+        return (this.onSortItems(items))
+
+      case 'SHOW_COMPLETE':
+        const showComplete = items.filter((task) => task.isDone === true)
+        return (this.onSortItems(showComplete))
+
+      case 'SHOW_ACTIVATE':
+        const showActivate = items.filter((task) => task.isDone === false)
+        return (this.onSortItems(showActivate))
+
     }
-
-    var updateTask = update(items, { $push: [TaskUnDone] })
-
-    this.onSortItems(updateTask)
-    this.setState({ itemsHistory })
-    itemRef.doc(value.id).set({
-      isDone: false
-    }, { merge: true })
   };
 
   handleDrawerOpen = (open) => {
@@ -314,7 +337,7 @@ class App extends Component {
 
             <ShowButton
               {...this.state}
-              changeShow={this.changeShow}
+              onFilterTask={this.onFilterTask}
 
             />
 
