@@ -60,6 +60,7 @@ class TaskShow extends Component {
 
     handleEditOpen = (value, index) => {
         this.setState({ item: value, openEdit: true, selectedTaskIndex: index })
+        console.log(index)
     }
 
     handleToggleEditTask = () => {
@@ -109,7 +110,7 @@ class TaskShow extends Component {
         });
         console.log(newChecked)
 
-        this.props.taskBack(value)
+        this.props.taskUnDone(value)
     };
 
     render() {

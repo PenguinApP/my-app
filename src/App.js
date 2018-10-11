@@ -209,10 +209,11 @@ class App extends Component {
     this.setState({
       items: itemsSort
     })
+    console.log(itemsSort, 'items')
   };
 
   onSortItemsDone = (items) => {
-    let {itemsHistory} = this.state
+    let { itemsHistory } = this.state
     var itemsSort = items.sort(function (x, y) {
       var a = new Date(x.startAt);
       var b = new Date(y.startAt);
@@ -223,7 +224,7 @@ class App extends Component {
     this.setState({
       itemsHistory: itemsSort
     })
-    console.log(itemsHistory)
+    console.log(itemsSort, 'History')
   };
 
   taskDone = (value) => {
@@ -233,28 +234,46 @@ class App extends Component {
     //console.log(index,'index')
 
     items.splice(index, 1)
-    var updateHistory = update(itemsHistory, { $push: [value] })
+
+    var TaskDone = {
+      name: value.name,
+      startAt: value.startAt,
+      endAt: value.endAt,
+      content: value.content,
+      isDone: true,
+      id: value.id
+    }
+
+    var updateHistory = update(itemsHistory, { $push: [TaskDone] })
 
     this.onSortItemsDone(updateHistory)
     this.setState({ items })
-    console.log(items)
     itemRef.doc(value.id).set({
       isDone: true
     }, { merge: true })
   };
 
-  taskBack = (value) => {
+  taskUnDone = (value) => {
     let { items, itemsHistory } = this.state
     var index = this.state.itemsHistory.findIndex(item => item.id === value.id)
     //console.log(this.state.items,'before')
     //console.log(index,'index')
 
     itemsHistory.splice(index, 1)
-    var updateTask = update(items, { $push: [value] })
+
+    var TaskUnDone = {
+      name: value.name,
+      startAt: value.startAt,
+      endAt: value.endAt,
+      content: value.content,
+      isDone: false,
+      id: value.id
+    }
+
+    var updateTask = update(items, { $push: [TaskUnDone] })
 
     this.onSortItems(updateTask)
     this.setState({ itemsHistory })
-
     itemRef.doc(value.id).set({
       isDone: false
     }, { merge: true })
@@ -311,7 +330,7 @@ class App extends Component {
               deleteItem={this.deleteItem}
               onArrayUpdate={this.onArrayUpdate}
               taskDone={this.taskDone}
-              taskBack={this.taskBack}
+              taskUnDone={this.taskUnDone}
             />
 
           </div>

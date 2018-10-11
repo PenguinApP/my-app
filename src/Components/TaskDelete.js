@@ -26,6 +26,7 @@ class TaskDelete extends Component {
     handleDelete(item, close) {
         this.props.deleteItem(item)
         this.props.handleToggleDeleteTask(close)
+        console.log(item, 'Delete')
     }
 
     render() {
