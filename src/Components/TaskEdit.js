@@ -24,6 +24,8 @@ import {
     Input,
 } from 'reactstrap';
 
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 var shortid = require('shortid');
 
 const styles = theme => ({

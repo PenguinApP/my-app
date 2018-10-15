@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
+import firebase, { auth, provider, provider2 } from '../Config/Firebase';
+import './Category.css'
+
 import Drawer from '@material-ui/core/Drawer';
 import Divider from '@material-ui/core/Divider';
 import Avatar from '@material-ui/core/Avatar';
@@ -13,6 +16,8 @@ import IconButton from '@material-ui/core/IconButton';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import PlaylistAdd from '@material-ui/icons/PlaylistAdd';
 import FormatListBulleted from '@material-ui/icons/FormatListBulleted';
+
+
 
 const drawerWidth = '300px';
 
@@ -39,8 +44,13 @@ class Category extends Component {
         this.props.handleDrawerOpen(open)
     };
 
+    logout = () => {
+        firebase.auth().signOut();
+        this.props.onSetUserNull()
+    }
+
     render() {
-        const { classes, theme } = this.props;
+        const { classes, theme, user } = this.props;
         return (
             <Drawer
                 variant="temporary"
@@ -52,28 +62,31 @@ class Category extends Component {
                 }}
             >
 
-                <div className={classes.drawerHeader}>
-                    <ListItem>
-                        <Avatar alt="Remy Sharp" src={User} className={classes.avatar} />
-                        <ListItemText primary="Username" secondary="Email" />
-                        <IconButton onClick={() => this.handleDrawerClose(false)}>
-                            <ChevronLeftIcon />
-                        </IconButton>
-                    </ListItem>
-                </div>
+                <ListItem>
+                    <Avatar alt={user.email} src={user.photoURL || User} className={classes.avatar} />
+                    <ListItemText primary={user.email} secondary={user.displayName} />
+                    <IconButton onClick={() => this.handleDrawerClose(false)}>
+                        <ChevronLeftIcon />
+                    </IconButton>
+                </ListItem>
                 <Divider />
-                <ListItem button>
+
+                {/* <ListItem button>
                     <ListItemIcon>
                         <FormatListBulleted />
                     </ListItemIcon>
                     <ListItemText primary="ส่วนตัว" /></ListItem>
-
+                
                 <ListItem button>
                     <ListItemIcon>
                         <PlaylistAdd />
                     </ListItemIcon>
                     <ListItemText primary="เพิ่มหมวดหมู่" />
-                </ListItem>
+                </ListItem> */}
+
+                <button className="logout logout--L" onClick={this.logout}>
+                    logout
+                </button>
             </Drawer>
         )
     }

@@ -71,14 +71,15 @@ class InputItem extends Component {
                 endAt: new Date(),
                 content: '',
                 isDone: false,
-                id: null
+                id: null,
+                user: this.props.user.uid
             }
             this.props.addItem(Task)
-            this.setState({ name: '', })
+            this.setState({ name: ''})
         }
 
         // itemTask.push(task)
-    }
+    }   
 
 
     render() {

@@ -1,0 +1,34 @@
+.logout{
+    box-sizing: border-box;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    border: none;
+    text-align: left;
+    line-height: 34px;
+    white-space: nowrap;
+    border-radius: 0.2em;
+    font-size: 16px;
+    color: #FFF;
+    font-family: 'Prompt', sans-serif;
+    text-align: center;
+}
+
+.logout:focus {
+  outline: none;
+}
+
+.logout:active {
+  box-shadow: inset 0 0 0 32px rgba(0,0,0,0.1);
+}
+
+
+.logout--L {
+  background: #f12626;
+  width: 100%;
+ 
+}
+.logout--L:hover,
+.logout--L:focus {
+  background: #E74B37;
+}

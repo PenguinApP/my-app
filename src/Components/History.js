@@ -91,8 +91,7 @@ class History extends Component {
                                             <DeleteIcon />
                                         </IconButton>
                                     </ListItemSecondaryAction>
-
-
+                                    
                                 </ListItem>
                             )
                         }

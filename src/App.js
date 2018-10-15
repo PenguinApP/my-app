@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-
-import firebase, { db } from './Config/Firebase';
+import firebase, { db, auth } from './Config/Firebase';
 import Input from './Components/Input';
 import Navigation from './Components/Navigation'
 import TaskShow from './Components/TaskShow';
@@ -9,10 +8,10 @@ import Category from './Components/Category';
 import Calendar from './Components/Calendar';
 import History from './Components/History';
 import ShowButton from './Components/ShowButton';
+import Login from './Components/Login';
 
 
 import moment from 'moment';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import update from 'immutability-helper';
 import './App.css';
 
@@ -29,18 +28,29 @@ class App extends Component {
       Category: [],
       page: 'งาน',
       menu: 'งานเสร็จ',
+      open: true,
       filterTaskType: 'SHOW_ACTIVATE',
+      user: null,
+      isWaitingForUserResult: true,
     }
   }
 
+  componentWillMount() {
+    var self = this
+    auth.onAuthStateChanged((user) => {
+      if (user) { self.onSetUser(user) }
+      self.setState({ isWaitingForUserResult: false })
+    })
+  }
+
   componentDidMount() {
-    this.queryTask()
+    // this.queryTask()
     // this.queryHistory()
   }
 
   // input
   addItem = (Task) => {
-    var { items } = this.state
+    var { items, user } = this.state
     var self = this
 
     var s = moment(Task.startAt.toDateString()).format('YYYY-MM-DD');
@@ -51,7 +61,7 @@ class App extends Component {
       endAt: e,
       content: Task.content,
       isDone: Task.isDone,
-      id: Task.id
+      id: Task.id,
     }
 
     const updateTask = update(items, { $push: [TaskDate] })
@@ -146,8 +156,11 @@ class App extends Component {
 
   queryTask = () => {
     var items = []
+    // var uid = this.state.user.uid
+    var uid = this.state.user.uid
     var self = this
-    const queryRef = itemRef
+
+    const queryRef = itemRef.where('user', '==', uid)
     queryRef.get()
       .then(function (querySnapshot) {
         querySnapshot.forEach(function (doc) {
@@ -329,7 +342,14 @@ class App extends Component {
     console.log('menu', menu)
   };
 
-
+  onSetUser = (user) => {
+    this.setState({ user: user }, () => {
+      this.queryTask()
+    })
+  }
+  onSetUserNull = () => {
+    this.setState({ user: null })
+  }
 
   renderpage = () => {
     switch (this.state.page) {
@@ -344,6 +364,7 @@ class App extends Component {
             />
 
             <Input
+              {...this.state}
               items={this.state.items}
               addItem={this.addItem}
             />
@@ -388,33 +409,41 @@ class App extends Component {
   }
 
   render() {
+    const { user } = this.state
     return (
-      <div align="center"
-      >
+      user ?
+        <div align="center">
+          <Navbar
+            handleDrawerOpen={this.handleDrawerOpen}
+            changeMenu={this.changeMenu}
+            {...this.state}
+          />
 
-        <Navbar
-          handleDrawerOpen={this.handleDrawerOpen}
-          changeMenu={this.changeMenu}
-          {...this.state}
-        />
+          <Category
+            {...this.state}
+            handleDrawerOpen={this.handleDrawerOpen}
+            onSetUserNull={this.onSetUserNull}
+          />
 
-        <Category
-          handleDrawerOpen={this.handleDrawerOpen}
-          open={this.state.open}
-        />
+          <br /><br /><br /><br />
 
-        <br /><br /><br />
+          {this.renderpage()}
 
-        {this.renderpage()}
+          <br /><br /><br />
 
-        <br /><br /><br />
+          <Navigation
+            changePage={this.changePage}
+            onFilterTask={this.onFilterTask}
+          />
+        </div>
+        :
+        <div>
+          <Login
+            onSetUser={this.onSetUser}
 
-        <Navigation
-          changePage={this.changePage}
-          onFilterTask={this.onFilterTask}
-        />
+          />
+        </div>
 
-      </div>
     )
   }
 }
