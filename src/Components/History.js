@@ -65,12 +65,14 @@ class History extends Component {
     }
 
     render() {
-        const { itemsHistory, classes, deleteItem, editItem } = this.props;
+        const { classes, deleteItem, editItem, showItems } = this.props;
         return (
             <div className={classes.root}>
                 <main className={classes.layout}>
+
                     <List component="nav">
-                        {itemsHistory.map((value, index) => {
+
+                        {showItems.map((value, index) => {
                             return (
 
                                 <ListItem
@@ -96,6 +98,7 @@ class History extends Component {
                         }
                         )
                         }
+
                     </List>
 
                     <TaskEdit

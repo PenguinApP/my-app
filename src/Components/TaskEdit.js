@@ -88,6 +88,8 @@ class TaskEdit extends Component {
             content: document.getElementById("content").value,
             startAt: document.getElementById("startAt").value,
             endAt: document.getElementById("endAt").value,
+            content: document.getElementById("content").value,
+            isDone: this.props.item.isDone,
             id: this.props.item.id
         }
         this.props.editItem(item, this.props.selectedTaskIndex)

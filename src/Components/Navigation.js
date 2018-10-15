@@ -33,8 +33,10 @@ class Navigation extends Component {
         this.setState({ value });
     };
 
-    changePage(page) {
+    changePage(page, type) {
         this.props.changePage(page)
+        this.props.onFilterTask(type)
+        console.log(type)
     }
 
     render() {
@@ -49,8 +51,8 @@ class Navigation extends Component {
                     showLabels
                     className={classes.root}
                 >
-                    <BottomNavigationAction key='1' onClick={() => this.changePage('งาน')} label="งาน" icon={<Assignment />} />
-                    <BottomNavigationAction key='2' onClick={() => this.changePage('ประวัติ')} label="ประวัติ" icon={<History />} />
+                    <BottomNavigationAction key='1' onClick={() => this.changePage('งาน', 'SHOW_ACTIVATE')} label="งาน" icon={<Assignment />} />
+                    <BottomNavigationAction key='2' onClick={() => this.changePage('ประวัติ', 'SHOW_HISTORY')} label="ประวัติ" icon={<History />} />
                     <BottomNavigationAction key='3' onClick={() => this.changePage('ปฏิทิน')} label="ปฏิทิน" icon={<Event />} />
                 </BottomNavigation>
             </div>

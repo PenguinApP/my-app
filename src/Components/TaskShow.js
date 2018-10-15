@@ -75,25 +75,12 @@ class TaskShow extends Component {
         this.setState({ item: value, openDelete: true, selectedTaskIndex: index })
     }
 
-    handleToggle = value => () => {
-        const { checked } = this.state;
-        const currentIndex = checked.indexOf(value);
-        const newChecked = [...checked];
-
-        if (currentIndex === -1) {
-            newChecked.push(value);
-        } else {
-            newChecked.splice(currentIndex, 1);
-        }
-
-        this.setState({
-            checked: newChecked,
-        });
-        console.log(newChecked)
+    // handleToggle = value => () => {
 
 
-        this.props.taskDone(value)
-    };
+
+    //     this.props.taskDone(value)
+    // };
 
     // handleToggleHistory = value => () => {
     //     const { checked } = this.state;
@@ -122,16 +109,25 @@ class TaskShow extends Component {
                 <main className={classes.layout}>
 
                     <List component="nav">
-                        {items.map((value, index) => {
+                        {showItems.map((value, index) => {
                             return (
                                 <ListItem
                                     key={value.id}
                                     button
                                     onClick={() => this.handleEditOpen(value, index)}
                                 >
-                                    <ListItemText
-                                        primary={value.name}
-                                        secondary={moment(value.startAt).format('ll')} />
+                                    {value.isDone === false ?
+
+                                        <ListItemText
+                                            primary={value.name}
+                                            secondary={moment(value.startAt).format('ll')} />
+                                        :
+
+                                        <ListItemText
+                                            primary={value.name}
+                                            className={classes.text}
+                                            secondary={moment(value.startAt).format('ll')} />
+                                    }
 
                                     {this.props.menu === 'ลบงาน' ?
                                         <ListItemSecondaryAction>
@@ -142,7 +138,7 @@ class TaskShow extends Component {
                                         :
                                         <ListItemSecondaryAction>
                                             <Checkbox
-                                                onChange={this.handleToggle(value)}
+                                                onChange={() => this.props.taskDone(value)}
                                                 checked={value.isDone}
                                             />
                                         </ListItemSecondaryAction>
@@ -152,7 +148,6 @@ class TaskShow extends Component {
                         }
                         )
                         }
-                        <br />
                     </List>
 
 

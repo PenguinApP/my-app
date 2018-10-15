@@ -53,27 +53,24 @@ class CalendarTask extends Component {
         let listData = []
         //console.log(this.props.items)
         this.props.items.map((item) => {
-            var time = moment(new Date(item.startAt)).format('MMMM Do YYYY')
-            var time2 = moment(new Date(value)).format('MMMM Do YYYY')
+            var startAt = moment(new Date(item.startAt)).format('MMMM Do YYYY')
+            var dayCalendar = moment(new Date(value)).format('MMMM Do YYYY')
 
-            if (time === time2) {
-                // console.log(time, 'ตรงกัน', time2)
-                listData.push(
-                    { type: 'warning', content: item.name },
-                )
+            if (startAt === dayCalendar) {
+                // console.log(startAt, 'ตรงกัน', dayCalendar)
+                console.log(item, 'item')
+                if (item.isDone === false) {
+                    listData.push(
+                        { type: 'warning', content: item.name },
+                    )
+                } else {
+                    listData.push(
+                        { type: 'success', content: item.name },
+                    )
+                }
+
             }
-        })
 
-        this.props.itemsHistory.map((item) => {
-            var time = moment(new Date(item.startAt)).format('MMMM Do YYYY')
-            var time2 = moment(new Date(value)).format('MMMM Do YYYY')
-
-            if (time === time2) {
-                // console.log(time, 'ตรงกัน', time2)
-                listData.push(
-                    { type: 'success', content: item.name },
-                )
-            }
         })
 
         return listData || [];
@@ -124,7 +121,6 @@ class CalendarTask extends Component {
             selectedDate: D
         });
 
-        
         console.log(value._d)
         console.log(D)
         console.log(this.props.items)
@@ -141,7 +137,7 @@ class CalendarTask extends Component {
 
     render() {
 
-        const { items, itemsHistory, classes, editItem } = this.props
+        const { items, itemsHistory, classes, editItem, showItems } = this.props
         const { value, selectedValue, selectedDate } = this.state;
         return (
             <div>
@@ -171,27 +167,15 @@ class CalendarTask extends Component {
                                                 key={item.id}
                                                 button
                                             >
-                                                <ListItemText
-                                                    primary={item.name} />
-                                            </ListItem>
-                                            : null
-                                        }
-                                    </div>
-                                )
-                            }
-                            )
-                            }
-                            {itemsHistory.map((item) => {
-                                return (
-                                    <div className="calendar">
-                                        {selectedDate === item.startAt ?
-                                            <ListItem
-                                                key={item.id}
-                                                button
-                                            >
-                                                <ListItemText
-                                                    className={classes.text}
-                                                    primary={item.name}/>
+
+                                                {item.isDone === false ?
+                                                    <ListItemText
+                                                        primary={item.name} />
+                                                    :
+                                                    <ListItemText
+                                                        className={classes.text}
+                                                        primary={item.name} />}
+
                                             </ListItem>
                                             : null
                                         }
@@ -211,7 +195,7 @@ class CalendarTask extends Component {
                     </DialogActions>
                 </Dialog>
 
-                
+
 
             </div>
         )

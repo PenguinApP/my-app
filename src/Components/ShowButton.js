@@ -24,7 +24,7 @@ class ShowButtton extends Component {
     constructor(props) {
         super(props)
         this.state = {
-
+            type: 'SHOW_ACTIVATE',
         }
 
     }
@@ -33,16 +33,18 @@ class ShowButtton extends Component {
         this.setState({ size: e.target.value });
     }
 
-    handleShowButton = (menu) => {
-        this.props.onFilterTask(menu)
+    handleShowButton = (type) => {
+        this.setState({ type: type })
+
+        this.props.onFilterTask(type)
     };
 
     render() {
-        const { classes } = this.props;
+        const { classes, filterTaskType } = this.props;
 
         return (
             <div>
-                <Radio.Group value={this.props.filterTaskType} onChange={this.handleMenuChange}>
+                <Radio.Group value={filterTaskType} onChange={this.handleMenuChange}>
                     <Radio.Button value={'SHOW_ALL'} onClick={() => this.handleShowButton('SHOW_ALL')}>แสดงงานทั้งหมด</Radio.Button>
                     <Radio.Button value={'SHOW_ACTIVATE'} onClick={() => this.handleShowButton('SHOW_ACTIVATE')}>แสดงงานที่กำลังดำเนินงาน</Radio.Button>
                 </Radio.Group>
