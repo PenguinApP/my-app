@@ -1,12 +1,12 @@
 import firebase from 'firebase'
 require('firebase/firestore')
 const config = {
-    apiKey: "AIzaSyAzdFGIgTpRc3t9XWHiVFmx3ISEKDEFUeM",
-    authDomain: "test-project-ling-2.firebaseapp.com",
-    databaseURL: "https://test-project-ling-2.firebaseio.com",
-    projectId: "test-project-ling-2",
-    storageBucket: "test-project-ling-2.appspot.com",
-    messagingSenderId: "29868164974"
+    apiKey: "AIzaSyB-fuOTdLnoniBSy0WrK-qI7E2xzMSv788",
+    authDomain: "ling-task-test.firebaseapp.com",
+    databaseURL: "https://ling-task-test.firebaseio.com",
+    projectId: "ling-task-test",
+    storageBucket: "ling-task-test.appspot.com",
+    messagingSenderId: "697495590937"
 };
 firebase.initializeApp(config);
 export const ref = firebase.database().ref()

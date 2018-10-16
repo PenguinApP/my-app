@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 
 import moment from 'moment';
+import 'moment/locale/th';
 import TaskEdit from './TaskEdit';
 import TaskDelete from './TaskDelete';
 
@@ -20,7 +21,6 @@ import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 
 import './TaskShow.css';
-import 'moment/locale/th';
 
 var shortid = require('shortid');
 

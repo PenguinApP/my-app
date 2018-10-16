@@ -1,0 +1,6 @@
+{
+  "projects": {
+    "default": "ling-task-test",
+    "staging": "ling-task-test"
+  }
+}

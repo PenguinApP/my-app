@@ -10,7 +10,6 @@ import History from './Components/History';
 import ShowButton from './Components/ShowButton';
 import Login from './Components/Login';
 
-
 import moment from 'moment';
 import update from 'immutability-helper';
 import './App.css';
@@ -29,7 +28,7 @@ class App extends Component {
       page: 'งาน',
       menu: 'งานเสร็จ',
       open: true,
-      filterTaskType: 'SHOW_ACTIVATE',
+      filterTaskType: 'SHOW_ALL',
       user: null,
       isWaitingForUserResult: true,
     }
@@ -39,7 +38,9 @@ class App extends Component {
     var self = this
     auth.onAuthStateChanged((user) => {
       if (user) { self.onSetUser(user) }
-      self.setState({ isWaitingForUserResult: false })
+      self.setState({ isWaitingForUserResult: false }, () => {
+        console.log(this.state.isWaitingForUserResult , 'w8')
+      })
     })
   }
 
@@ -347,6 +348,7 @@ class App extends Component {
       this.queryTask()
     })
   }
+
   onSetUserNull = () => {
     this.setState({ user: null })
   }
@@ -409,39 +411,43 @@ class App extends Component {
   }
 
   render() {
-    const { user } = this.state
+    const { user, isWaitingForUserResult } = this.state
     return (
-      user ?
-        <div align="center">
-          <Navbar
-            handleDrawerOpen={this.handleDrawerOpen}
-            changeMenu={this.changeMenu}
-            {...this.state}
-          />
+      isWaitingForUserResult === false ?
+        user ?
+          <div align="center">
+            <Navbar
+              handleDrawerOpen={this.handleDrawerOpen}
+              changeMenu={this.changeMenu}
+              {...this.state}
+            />
 
-          <Category
-            {...this.state}
-            handleDrawerOpen={this.handleDrawerOpen}
-            onSetUserNull={this.onSetUserNull}
-          />
+            <Category
+              {...this.state}
+              handleDrawerOpen={this.handleDrawerOpen}
+              onSetUserNull={this.onSetUserNull}
+            />
 
-          <br /><br /><br /><br />
+            <br /><br /><br /><br />
 
-          {this.renderpage()}
+            {this.renderpage()}
 
-          <br /><br /><br />
+            <br /><br /><br />
 
-          <Navigation
-            changePage={this.changePage}
-            onFilterTask={this.onFilterTask}
-          />
-        </div>
+            <Navigation
+              changePage={this.changePage}
+              onFilterTask={this.onFilterTask}
+            />
+          </div>
+          :
+          <div>
+            <Login
+              onSetUser={this.onSetUser}
+            />
+          </div>
         :
         <div>
-          <Login
-            onSetUser={this.onSetUser}
 
-          />
         </div>
 
     )

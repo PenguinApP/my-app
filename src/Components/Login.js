@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import firebase, { auth, provider, provider2 } from '../Config/Firebase';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
+
+import Register from './Register';
+import Reset from './Reset';
 import './Login.css';
 
 import logo from '../Picture/Ling logo.png'
@@ -12,8 +15,6 @@ import Lock from '@material-ui/icons/Lock';
 import FormControl from '@material-ui/core/FormControl';
 import FormGroup from '@material-ui/core/FormGroup';
 import Button from '@material-ui/core/Button';
-import Register from './Register';
-import Reset from './Reset';
 
 
 const styles = theme => ({

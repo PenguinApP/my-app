@@ -3,6 +3,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 
+import moment from 'moment';
+import 'moment/locale/th';
+
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import AppBar from '@material-ui/core/AppBar';
@@ -187,12 +190,12 @@ class TaskEdit extends Component {
                                     </FormGroup>
                                     <FormGroup>
                                         <Label for="startDate">วันเริ่มงาน</Label>
-                                        <Input id='startAt' type="text" name="startDate" value={item.startAt} />
+                                        <Input id='startAt' type="text" name="startDate" value={moment(item.startAt).format('DD/MM/YYYY')} />
                                     </FormGroup>
                                     {' '}
                                     <FormGroup>
                                         <Label for="endDate">วันสิ้นสุดงาน</Label>
-                                        <Input id='endAt' type="text" name="endDate" value={item.endAt} />
+                                        <Input id='endAt' type="text" name="endDate" value={moment(item.endAt).format('DD/MM/YYYY')} />
                                     </FormGroup>
                                     <FormGroup>
                                         <Label for="description">คำอธิบาย</Label>

@@ -65,9 +65,10 @@ class Category extends Component {
                 <ListItem>
                     <Avatar alt={user.email} src={user.photoURL || User} className={classes.avatar} />
                     <ListItemText primary={user.email} secondary={user.displayName} />
-                    <IconButton onClick={() => this.handleDrawerClose(false)}>
+                    {/* <IconButton onClick={() => this.handleDrawerClose(false)}>
                         <ChevronLeftIcon />
-                    </IconButton>
+                    </IconButton> */}
+                
                 </ListItem>
                 <Divider />
 

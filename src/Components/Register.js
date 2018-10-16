@@ -89,7 +89,7 @@ class Register extends Component {
                                         <Lock />
                                     </Grid>
                                     <Grid item>
-                                        <TextField value={this.state.password} onChange={this.handleChange} name="password" type="password" id="Password" label="ป้อนรหัสผ่าน" />
+                                        <TextField value={this.state.password} onChange={this.handleChange} name="password" type="password" id="Password" label="ป้อนรหัสผ่าน 6 ตัวขึ้นไป" />
                                     </Grid>
                                 </Grid>
                             </FormGroup>

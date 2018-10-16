@@ -1,7 +1,7 @@
 .logout{
     box-sizing: border-box;
-    position: absolute;
-    bottom: 0;
+    position: relative;
+    
     left: 0;
     border: none;
     text-align: left;

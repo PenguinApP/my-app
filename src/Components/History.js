@@ -2,17 +2,20 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 
+import TaskEdit from './TaskEdit';
+import TaskDelete from './TaskDelete';
+import moment from 'moment';
+import 'moment/locale/th';
+
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-
-import TaskEdit from './TaskEdit';
-import TaskDelete from './TaskDelete';
 import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
+
 
 const styles = theme => ({
     root: {
@@ -83,15 +86,16 @@ class History extends Component {
                                     <ListItemText
                                         className={classes.text}
                                         primary={value.name}
+                                        secondary={moment(value.startAt).format('ll')} />
 
-                                    />
+
 
                                     <ListItemSecondaryAction>
                                         <IconButton aria-label="Delete" onClick={() => this.handleDeleteOpen(value, index)}>
                                             <DeleteIcon />
                                         </IconButton>
                                     </ListItemSecondaryAction>
-                                    
+
                                 </ListItem>
                             )
                         }

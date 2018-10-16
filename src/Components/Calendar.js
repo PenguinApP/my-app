@@ -7,6 +7,7 @@ import 'antd/dist/antd.css';
 import './Calendar.css';
 import { Calendar, Badge } from 'antd';
 import moment from 'moment';
+import 'moment/locale/th';
 
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -94,7 +95,7 @@ class CalendarTask extends Component {
 
     getMonthData(value) {
         if (value.month() === 8) {
-            return 1150;
+            return ;
         }
     }
 
@@ -103,7 +104,6 @@ class CalendarTask extends Component {
         return num ? (
             <div className="notes-month">
                 <section>{num}</section>
-                <span>Time</span>
             </div>
         ) : null;
     }
