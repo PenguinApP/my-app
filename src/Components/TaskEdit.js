@@ -152,9 +152,13 @@ class TaskEdit extends Component {
                             <Typography variant="title" color="inherit" className={classes.flex}>
                                 {item.name}
                             </Typography>
-                            <Button color="inherit" onClick={() => this.handleSave()}>
-                                save
-                            </Button>
+                            {item.isDone === false ?
+                                <Button color="inherit" onClick={() => this.handleSave()}>
+                                    save
+                                </Button>
+                                :
+                                null
+                            }
                         </Toolbar>
                     </AppBar>
 
